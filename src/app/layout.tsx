@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import '@fontsource/inter/400.css'; // Peso 400 (Normal)
+import '@fontsource/inter/500.css'; // Peso 500 (Médio)
+import '@fontsource/inter/700.css'; // Peso 700 (Negrito)
 import "./globals.css";
 
 const geistSans = Geist({
