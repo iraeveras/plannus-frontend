@@ -3,6 +3,10 @@
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import api from "@/services/api";
+import Input from "@/components/Input";
+import Button from "@/components/Button";
+import FormWrapper from "@/components/FormWrapper";
+import Title from "@/components/Title";
 
 export default function EditPremise() {
     const { id } = useParams(); // Captura o ID da URL
@@ -10,7 +14,7 @@ export default function EditPremise() {
     const [formData, setFormData] = useState({
         name: "",
         category: "",
-        year: new Date().getFullYear(),
+        year: "",
     });
     const [error, setError] = useState("");
 
@@ -54,49 +58,41 @@ export default function EditPremise() {
 
     return (
         <main className="p-6 bg-gray-100 min-h-screen">
-            <h1 className="text-3xl font-bold text-primary mb-6">Editar Premissa</h1>
+            <Title text="Editar Premissa" />
             {error && <p className="text-red-600 mb-4">{error}</p>}
-            <form className="bg-white p-6 rounded shadow-md" onSubmit={handleSubmit}>
-                <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700">Nome</label>
-                    <input
-                        type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        className="w-full mt-1 p-2 border rounded focus:outline-primary"
-                        required
-                    />
-                </div>
-                <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700">Categoria</label>
-                    <input
-                        type="text"
-                        name="category"
-                        value={formData.category}
-                        onChange={handleInputChange}
-                        className="w-full mt-1 p-2 border rounded focus:outline-primary"
-                        required
-                    />
-                </div>
-                <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700">Ano</label>
-                    <input
-                        type="number"
-                        name="year"
-                        value={formData.year}
-                        onChange={handleInputChange}
-                        className="w-full mt-1 p-2 border rounded focus:outline-primary"
-                        required
-                    />
-                </div>
-                <button
-                    type="submit"
-                    className="bg-primary text-white px-4 py-2 rounded hover:bg-primary/90"
-                >
-                    Salvar Alterações
-                </button>
-            </form>
+            <FormWrapper 
+                onSubmit={handleSubmit}
+            >
+                <Input
+                type="text" 
+                    label="Nome"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    placeholder="Carregando..."
+                    required
+                />
+                <Input
+                    type="text"
+                    label="Categoria"
+                    name="category"
+                    value={formData.category}
+                    onChange={handleInputChange}
+                    placeholder="Carregando..."
+                    required
+                />
+                <Input
+                    type="number"
+                    label="Ano"
+                    name="year"
+                    value={formData.year}
+                    onChange={handleInputChange}
+                    placeholder="Carregando..."
+                    required
+                />
+
+                <Button type="submit" label="Salvar Alterações" />
+            </FormWrapper>
         </main>
     );
 }

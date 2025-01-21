@@ -3,6 +3,9 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/services/api";
+import Title from "@/components/Title";
+import Table from "@/components/Table";
+import { headers } from "next/headers";
 
 export default function PremisesList() {
     const [premises, setPremises] = useState([]);
@@ -41,43 +44,37 @@ export default function PremisesList() {
         router.push(`/premises/edit/${id}`);
     };
 
+    const headers = ["Nome", "Categoria", "Ano", "Ações"];
+
     return (
         <main className="p-6 bg-gray-100 min-h-screen">
-            <h1 className="text-3xl font-bold text-primary mb-6">Listagem de Premissas</h1>
+            <Title text="Listagem de Premissas" />
             {error && <p className="text-red-600 mb-4">{error}</p>}
-            <table className="w-full bg-white rounded shadow-md overflow-hidden">
-                <thead className="bg-gray-200">
-                    <tr>
-                        <th className="text-left p-4">Nome</th>
-                        <th className="text-left p-4">Categoria</th>
-                        <th className="text-left p-4">Ano</th>
-                        <th className="text-left p-4">Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {premises.map((premise: any) => (
-                        <tr key={premise.id} className="border-b">
-                            <td className="p-4">{premise.name}</td>
-                            <td className="p-4">{premise.category}</td>
-                            <td className="p-4">{premise.year}</td>
-                            <td className="p-4">
-                                <button
-                                    className="text-blue-500 hover:underline mr-4"
-                                    onClick={() => handleEdit(premise.id)}
-                                >
-                                    Editar
-                                </button>
-                                <button
-                                    className="text-red-500 hover:underline"
-                                    onClick={() => handleDelete(premise.id)}
-                                >
-                                    Excluir
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            <Table 
+                headers={headers}
+                data={premises}
+                renderRow={(item) => (
+                    <>
+                        <td className="px-4 py-2">{item.name}</td>
+                        <td className="px-4 py-2">{item.category}</td>
+                        <td className="px-4 py-2">{item.year}</td>
+                        <td className="px-4 py-2">
+                            <button 
+                                onClick={() => handleEdit(item.id)} 
+                                className="text-blue-500 hover:underline"
+                            >
+                                Editar
+                            </button>
+                            <button 
+                                onClick={() => handleDelete(item.id)} 
+                                className="text-red-500 hover:underline ml-4"
+                            >
+                                Excluir
+                            </button>
+                        </td>
+                    </>
+                )}
+            />
         </main>
     );
 }
