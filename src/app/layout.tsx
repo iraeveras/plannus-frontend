@@ -4,6 +4,7 @@ import '@fontsource/inter/400.css'; // Peso 400 (Normal)
 import '@fontsource/inter/500.css'; // Peso 500 (Médio)
 import '@fontsource/inter/700.css'; // Peso 700 (Negrito)
 import "./globals.css";
+import Sidebar from "@/components/Sidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,10 +28,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body className="flex h-screen bg-gray-100">
+        <Sidebar />        
+        <main className="flex-1 p-6 overflow-y-auto">{children}</main>
       </body>
     </html>
   );
