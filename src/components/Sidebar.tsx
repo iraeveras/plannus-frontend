@@ -82,9 +82,9 @@ const Sidebar = () => {
         {/* Botão de colapso */}
         <button
           onClick={toggleCollapse}
-          className={`${isCollapsed
-            ? "absolute left-12 top-1/2 transform -translate-y-1/2 text-white p-2 bg-gray-900 rounded-full"
-            : "absolute right-2 top-1/2 transform -translate-y-1/2 text-white p-2 hover:bg-gray-700 rounded"}`}
+          className={` absolute ${isCollapsed
+            ? "left-12 top-1/2 transform -translate-y-1/2 text-white p-2 bg-gray-900 rounded-full"
+            : "right-2 top-1/2 transform -translate-y-1/2 text-white p-2 hover:bg-gray-700 rounded"}`}
         >
           {isCollapsed ? <FaChevronCircleRight /> : <FaDownLeftAndUpRightToCenter />}
         </button>
