@@ -7,8 +7,15 @@ import Input from "@/components/Input";
 import Button from "@/components/Button";
 import FormWrapper from "@/components/FormWrapper";
 import Title from "@/components/Title";
+import { metadata } from "@/app/metadata";
 
 export default function EditPremise() {
+
+    useEffect(() => {
+        document.title = metadata.editPremise.title;
+        document.querySelector('meta[name="description"]')?.setAttribute("content", metadata.editPremise.description);
+    }, [])
+
     const { id } = useParams(); // Captura o ID da URL
     const router = useRouter();
     const [formData, setFormData] = useState({
@@ -60,11 +67,11 @@ export default function EditPremise() {
         <main className="p-6 bg-gray-100 min-h-screen">
             <Title text="Editar Premissa" />
             {error && <p className="text-red-600 mb-4">{error}</p>}
-            <FormWrapper 
+            <FormWrapper
                 onSubmit={handleSubmit}
             >
                 <Input
-                type="text" 
+                    type="text"
                     label="Nome"
                     name="name"
                     value={formData.name}

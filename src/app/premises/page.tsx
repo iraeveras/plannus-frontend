@@ -5,12 +5,19 @@ import { useRouter } from "next/navigation";
 import api from "@/services/api";
 import Title from "@/components/Title";
 import Table from "@/components/Table";
-import { headers } from "next/headers";
+import { metadata } from "@/app/metadata";
 
 export default function PremisesList() {
     const [premises, setPremises] = useState([]);
     const [error, setError] = useState("");
     const router = useRouter();
+
+    useEffect(() => {
+        document.title = metadata.listPremises.title;
+        document
+            .querySelector('meta[name="description"]')
+            ?.setAttribute("content", metadata.listPremises.description);
+    }, []);
 
     // Buscar premissas
     useEffect(() => {
@@ -50,7 +57,7 @@ export default function PremisesList() {
         <main className="p-6 bg-gray-100 min-h-screen">
             <Title text="Listagem de Premissas" />
             {error && <p className="text-red-600 mb-4">{error}</p>}
-            <Table 
+            <Table
                 headers={headers}
                 data={premises}
                 renderRow={(item) => (
@@ -59,14 +66,14 @@ export default function PremisesList() {
                         <td className="px-4 py-2">{item.category}</td>
                         <td className="px-4 py-2">{item.year}</td>
                         <td className="px-4 py-2">
-                            <button 
-                                onClick={() => handleEdit(item.id)} 
+                            <button
+                                onClick={() => handleEdit(item.id)}
                                 className="text-blue-500 hover:underline"
                             >
                                 Editar
                             </button>
-                            <button 
-                                onClick={() => handleDelete(item.id)} 
+                            <button
+                                onClick={() => handleDelete(item.id)}
                                 className="text-red-500 hover:underline ml-4"
                             >
                                 Excluir

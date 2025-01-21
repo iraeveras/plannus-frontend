@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { metadata } from "@/app/metadata";
 import api from "@/services/api";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
@@ -9,6 +10,12 @@ import FormWrapper from "@/components/FormWrapper";
 import Title from "@/components/Title";
 
 export default function NewPremise() {
+
+    useEffect(() => {
+        document.title = metadata.premises.title;
+        document.querySelector('meta[name="description"]')?.setAttribute("content", metadata.premises.description);
+    }, [])
+
     const [formData, setFormData] = useState({
         name: "",
         category: "",
@@ -73,7 +80,7 @@ export default function NewPremise() {
                     placeholder="Digite o ano"
                     required
                 />
-            
+
                 <Button type="submit" label="Cadastrar" />
             </FormWrapper>
         </main>
