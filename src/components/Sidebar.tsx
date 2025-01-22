@@ -4,12 +4,12 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { FaHome, FaBuilding, FaClipboardList } from "react-icons/fa";
 import { FaDownLeftAndUpRightToCenter } from "react-icons/fa6";
-import { FaUpRightAndDownLeftFromCenter } from "react-icons/fa6";
 import { FaChevronCircleRight } from "react-icons/fa";
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
+  const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
 
   // Persistencia de estado no LocalStorage
   useEffect(() => {
@@ -26,6 +26,11 @@ const Sidebar = () => {
 
   const toggleMenu = (menu: string) => {
     setActiveMenu((prev) => (prev === menu ? null : menu));
+    setActiveSubmenu(null);
+  };
+
+  const handleSubmenuClick = (submenu: string) => {
+    setActiveSubmenu(submenu);
   };
 
   const menuItems = [
@@ -92,26 +97,43 @@ const Sidebar = () => {
 
       {/* Menus */}
       <nav className="flex-1">
-        <ul className="space-y-2">
+        <ul className="space-y-0.5">
           {menuItems.map((item) => (
-            <li key={item.name} className="group">
-              <div
-                onClick={() => toggleMenu(item.name)}
-                className="flex items-center px-4 py-2 cursor-pointer hover:bg-gray-700 rounded"
-              >
-                <span className="text-xl">{item.icon}</span>
-                {!isCollapsed && (
-                  <span className="ml-4 group-hover:underline">{item.name}</span>
-                )}
-              </div>
+            <li key={item.name} className="group relative">
+              {item.path ? (
+                <Link
+                  href={item.path}
+                  className={`flex items-center px-4 py-2 cursor-pointer hover:bg-gray-700 text-white rounded ${activeMenu === item.name ? "bg-gray-700" : ""
+                    }`}
+                  onClick={() => setActiveMenu(item.name)}
+                >
+                  <span className="text-xl">{item.icon}</span>
+                  {!isCollapsed && <span className="ml-2">{item.name}</span>}
+                </Link>
+              ) : (
+                <div
+                  onClick={() => toggleMenu(item.name)}
+                  className={`flex items-center px-4 py-2 cursor-pointer hover:bg-gray-700 text-white rounded ${activeMenu === item.name ? "bg-gray-700" : ""
+                    }`}
+                >
+                  <span className="text-xl">{item.icon}</span>
+                  {!isCollapsed && (
+                    <span className="ml-2">{item.name}</span>
+                  )}
+                </div>
+              )}
+
               {/* Submenus */}
               {item.submenus && activeMenu === item.name && (
-                <ul className={`${isCollapsed ? "hidden" : "pl-8"} space-y-2`}>
+                <ul className={`space-y-0.5 text-slate-300 ${isCollapsed ? "absolute left-20 top-0 bg-gray-800 shadow-lg rounded" : "pl-10 mt-0.5 text-base"
+                  }`}>
                   {item.submenus.map((submenu) => (
                     <li key={submenu.name}>
                       <Link
                         href={submenu.path}
-                        className="block px-4 py-2 hover:bg-gray-600 rounded"
+                        className={`block px-4 py-1.5 hover:bg-gray-600 rounded ${activeSubmenu === submenu.name ? "bg-gray-700" : ""
+                          }`}
+                        onClick={() => handleSubmenuClick(submenu.name)}
                       >
                         {submenu.name}
                       </Link>
