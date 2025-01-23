@@ -1,6 +1,6 @@
 "use client"
 import * as React from "react";
-import { BookOpen, Bot, Command, Frame, LifeBuoy, Map, PieChart, Send, Settings2, SquareTerminal, ChevronRight, } from "lucide-react";
+import { BookOpen, Bot, Command, Frame, LifeBuoy, Map, PieChart, Send, Settings2, SquareTerminal, Gauge, ChevronRight, } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import {
     Sidebar,
@@ -23,6 +23,7 @@ import { NavSecondary } from "@/components/nav-secondary"
 import { NavUser } from "@/components/nav-user"
 
 import Link from "next/link";
+import { Separator } from "@radix-ui/react-separator";
 
 // Menu items.
 const data = {
@@ -33,14 +34,19 @@ const data = {
     },
     navMain: [
         {
-            title: "Playground",
+            title: "Dashboard",
+            url: "/",
+            icon: Gauge,
+        },
+        {
+            title: "Cadastros",
             url: "#",
             icon: SquareTerminal,
-            isActive: true,
+            isActive: false,
             items: [
                 {
-                    title: "History",
-                    url: "#",
+                    title: "Premissas",
+                    url: "/premises/new",
                 },
                 {
                     title: "Starred",
@@ -152,6 +158,7 @@ const data = {
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     return (
         <Sidebar variant="inset" {...props}>
+            <Separator/>
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
@@ -181,6 +188,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarFooter>
                 <NavUser user={data.user} />
             </SidebarFooter>
+            <SidebarRail/>
         </Sidebar>
     )
 }
