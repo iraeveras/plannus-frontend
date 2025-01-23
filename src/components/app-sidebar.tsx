@@ -28,9 +28,9 @@ import { Separator } from "@radix-ui/react-separator";
 // Menu items.
 const data = {
     user: {
-        name: "shadcn",
-        email: "m@example.com",
-        avatar: "/avatars/shadcn.jpg",
+        name: "Iraê Veras",
+        email: "irae@plazacasaforte.com.br",
+        avatar: "/avatars/irae.jpg",
     },
     navMain: [
         {
@@ -157,8 +157,7 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     return (
-        <Sidebar variant="inset" {...props}>
-            <Separator/>
+        <Sidebar collapsible="icon" variant="inset" {...props}>
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
@@ -188,7 +187,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarFooter>
                 <NavUser user={data.user} />
             </SidebarFooter>
-            <SidebarRail/>
+            <SidebarRail />
         </Sidebar>
     )
 }

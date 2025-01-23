@@ -9,7 +9,7 @@ const FormWrapper: React.FC<FormWrapperProps> = ({ children, onSubmit }) => {
     return (
         <form
             onSubmit={onSubmit}
-            className="bg-white p-6 rounded shadow-md space-y-4"
+            className=" p-6 rounded shadow-md space-y-4"
         >
             {children}
         </form>

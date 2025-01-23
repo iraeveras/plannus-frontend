@@ -1,9 +1,10 @@
 
 import { cookies } from "next/headers";
 import { ThemeProvider } from "@/components/theme-provider";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 import "./globals.css";
+import { Separator } from "@/components/ui/separator";
 
 export default async function RootLayout({
   children,
@@ -25,10 +26,11 @@ export default async function RootLayout({
         >
           <SidebarProvider defaultOpen={defaultOpen}>
             <AppSidebar />
-            <main>
-              <SidebarTrigger />
-              {children}
-            </main>
+            <SidebarInset >
+              <main>
+                {children}
+              </main>
+            </SidebarInset>
           </SidebarProvider>
         </ThemeProvider>
       </body>
