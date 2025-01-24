@@ -4,15 +4,15 @@ interface TableProps {
     renderRow: (item: any) => React.ReactNode; // Função para renderizar cada lilnha
 }
 
-const Table: React.FC<TableProps> = ({ headers, data, renderRow}) => {
+const Table: React.FC<TableProps> = ({ headers, data, renderRow }) => {
     return (
-        <table className="table-auto w-full bg-white shadow-md rounded border">
-            <thead className="bg-gray-100">
+        <table className="table-auto w-full font-sans shadow-md rounded border">
+            <thead className="">
                 <tr>
                     {headers.map((header, index) => (
                         <th
                             key={index}
-                            className="text-left px-4 py-2 text-gray-700 font-semibold"
+                            className="text-left px-4 py-2 uppercase text-sm text-foreground font-bold"
                         >
                             {header}
                         </th>
@@ -22,7 +22,7 @@ const Table: React.FC<TableProps> = ({ headers, data, renderRow}) => {
             <tbody>
                 {data.length > 0 ? (
                     data.map((item, index) => (
-                        <tr key={index} className="border-t hover:bg-gray-50">
+                        <tr key={index} className="border-t text-sm text-foreground ">
                             {renderRow(item)}
                         </tr>
                     ))
