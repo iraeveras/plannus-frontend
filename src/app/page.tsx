@@ -3,6 +3,7 @@
 // File: src/app/dashboard/page.tsx
 
 import { metadata } from "@/app/metadata";
+import { ModeToggle } from "@/components/dark-mode";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
@@ -18,17 +19,20 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <main className=" min-h-screen">
-      <header className="flex sticky top-0 bg-background h-16 shrink-0 items-center gap-2 border-b px-4">
-        <SidebarTrigger className="ml-1" />
-        <Separator orientation="vertical" className="mr-2 h-4" />
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbPage>Home</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+    <>
+      <header className="flex items-center justify-between border-b px-4">
+        <div className="flex sticky top-0 bg-background  h-16 shrink-0 items-center gap-2 ">
+          <SidebarTrigger className="ml-1" />
+          <Separator orientation="vertical" className="mr-2 h-4" />
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbPage>Home</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
+        <ModeToggle />
       </header>
       {/* <h1 className="text-3xl font-bold text-primary">Dashboard</h1> */}
       <div className="mt-6 ml-6 mr-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -45,6 +49,6 @@ export default function Dashboard() {
           <p className="mt-2 text-gray-700">Total: 10</p>
         </div>
       </div>
-    </main>
+    </>
   );
 }
