@@ -64,42 +64,43 @@ export default function EditPremise() {
     };
 
     return (
-        <main className="p-6 bg-gray-100 min-h-screen">
-            <Title text="Editar Premissa" />
+        <main className=" min-h-screen">
             {error && <p className="text-red-600 mb-4">{error}</p>}
-            <FormWrapper
-                onSubmit={handleSubmit}
-            >
-                <Input
-                    type="text"
-                    label="Nome"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    placeholder="Carregando..."
-                    required
-                />
-                <Input
-                    type="text"
-                    label="Categoria"
-                    name="category"
-                    value={formData.category}
-                    onChange={handleInputChange}
-                    placeholder="Carregando..."
-                    required
-                />
-                <Input
-                    type="number"
-                    label="Ano"
-                    name="year"
-                    value={formData.year}
-                    onChange={handleInputChange}
-                    placeholder="Carregando..."
-                    required
-                />
+            <div className="p-6">
+                <FormWrapper
+                    onSubmit={handleSubmit}
+                >
+                    <Input
+                        type="text"
+                        label="Nome"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        placeholder="Carregando..."
+                        required
+                    />
+                    <Input
+                        type="text"
+                        label="Categoria"
+                        name="category"
+                        value={formData.category}
+                        onChange={handleInputChange}
+                        placeholder="Carregando..."
+                        required
+                    />
+                    <Input
+                        type="number"
+                        label="Ano"
+                        name="year"
+                        value={formData.year}
+                        onChange={handleInputChange}
+                        placeholder="Carregando..."
+                        required
+                    />
 
-                <Button type="submit" label="Salvar Alterações" />
-            </FormWrapper>
+                    <Button type="submit" label="Salvar Alterações" />
+                </FormWrapper>
+            </div>            
         </main>
     );
 }

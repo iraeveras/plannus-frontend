@@ -52,50 +52,51 @@ export default function NewPremise() {
     };
 
     return (
-        <div>
+        <main className=" min-h-screen">
             <HeaderPage
                 breadcrumbItems={[{label: "Premissas", href: "/premises"}]}
                 currentPage="Cadastro de premissas"
             />
             
             {error && <p className="text-red-600 mb-4">{error}</p>}
-
-            <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                    <InputForm 
-                        label="Premissa"
-                        placeholder="DIgite o nome da premissa"
-                        type="text"
-                        name="name"
-                        control={form.control}
-                    />
-                    
-                    <InputForm 
-                        label="Categoria"
-                        placeholder="DIgite a categoria da premissa"
-                        type="text"
-                        name="category"
-                        control={form.control}
-                    />
-
-                    <InputForm 
-                        label="Ano"
-                        placeholder="Informe o ano da premissa"
-                        type="number"
-                        name="year"
-                        control={form.control}
-                        onChange={(e) => {
-                            const value = Number(e.target.value); // Garante que o valor seja convertido para número
-                            form.setValue("year", value); // Atualiza o valor manualmente no react-hook-form
-                        }}
+            <div className="p-6">
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+                        <InputForm 
+                            label="Premissa"
+                            placeholder="DIgite o nome da premissa"
+                            type="text"
+                            name="name"
+                            control={form.control}
+                        />
                         
-                    />
+                        <InputForm 
+                            label="Categoria"
+                            placeholder="DIgite a categoria da premissa"
+                            type="text"
+                            name="category"
+                            control={form.control}
+                        />
 
-                    <Button type="submit" disabled={!form.formState.isValid}>
-                        {isSubmitting ? "Enviando..." : "Cadastrar"}
-                    </Button>
-                </form>
-            </Form>
-        </div>
+                        <InputForm 
+                            label="Ano"
+                            placeholder="Informe o ano da premissa"
+                            type="number"
+                            name="year"
+                            control={form.control}
+                            onChange={(e) => {
+                                const value = Number(e.target.value); // Garante que o valor seja convertido para número
+                                form.setValue("year", value); // Atualiza o valor manualmente no react-hook-form
+                            }}
+                            
+                        />
+
+                        <Button type="submit" disabled={!form.formState.isValid}>
+                            {isSubmitting ? "Enviando..." : "Cadastrar"}
+                        </Button>
+                    </form>
+                </Form>
+            </div>            
+        </main >
     );
 }
