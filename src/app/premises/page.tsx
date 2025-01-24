@@ -1,15 +1,24 @@
+// File: src/app/premises/page.tsx
 "use client";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/services/api";
-import Title from "@/components/Title";
-import Table from "@/components/Table";
 import { metadata } from "@/app/metadata";
 import HeaderPage from "@/components/header-page";
+import { FilePenLine, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import DataTable from "@/components/data-table";
+
+type Premise = {
+    id: string;
+    name: string;
+    category: string;
+    year: number;
+}
 
 export default function PremisesList() {
-    const [premises, setPremises] = useState([]);
+    const [premises, setPremises] = useState<Premise[]>([]);
     const [error, setError] = useState("");
     const router = useRouter();
 
@@ -52,43 +61,31 @@ export default function PremisesList() {
         router.push(`/premises/edit/${id}`);
     };
 
-    const headers = ["Nome", "Categoria", "Ano", "Ações"];
+    const columns = [
+        { key: "name", label: "Nome", sortable: true, filterable: true },
+        { key: "category", label: "Categoria", sortable: true, filterable: true },
+        { key: "year", label: "Ano", sortable: true, filterable: true },
+    ] as const;
 
     return (
-        <main className="min-h-screen">
+        <div>
             <HeaderPage
-                breadcrumbItems={[{label: "Cadastro de premissas", href: "/premises/new"}]}
+                breadcrumbItems={[{ label: "Cadastro de premissas", href: "/premises/new" }]}
                 currentPage="Lista de premissas"
             />
             {error && <p className="text-red-600 mb-4">{error}</p>}
             <div className="p-6">
-                <Table
-                    headers={headers}
+                <DataTable<Premise>
                     data={premises}
-                    renderRow={(item) => (
+                    columns={[...columns]}
+                    actions={(row) => (
                         <>
-                            <td className="px-4 py-2">{item.name}</td>
-                            <td className="px-4 py-2">{item.category}</td>
-                            <td className="px-4 py-2">{item.year}</td>
-                            <td className="px-4 py-2">
-                                <button
-                                    onClick={() => handleEdit(item.id)}
-                                    className="text-blue-500 hover:underline"
-                                >
-                                    Editar
-                                </button>
-                                <button
-                                    onClick={() => handleDelete(item.id)}
-                                    className="text-red-500 hover:underline ml-4"
-                                >
-                                    Excluir
-                                </button>
-                            </td>
+                            <FilePenLine className="cursor-pointer text-blue-400 hover:text-blue-500" onClick={() => handleEdit(row.id)} />
+                            <Trash2 className="cursor-pointer text-red-400 hover:text-red-500" onClick={() => handleDelete(row.id)} />
                         </>
                     )}
                 />
             </div>
-            
-        </main>
+        </div>
     );
 }

@@ -8,10 +8,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { buttonVariants } from "@/components/ui/button";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import InputForm from "@/components/input-form";
 import HeaderPage from "@/components/header-page";
+import Link from "next/link";
 
 const formSchema = z.object({
     name: z.string().min(1, "O nome da premissa é obrigatório"),
@@ -52,25 +54,25 @@ export default function NewPremise() {
     };
 
     return (
-        <main className=" min-h-screen">
+        <>
             <HeaderPage
-                breadcrumbItems={[{label: "Premissas", href: "/premises"}]}
+                breadcrumbItems={[{ label: "Premissas", href: "/premises" }]}
                 currentPage="Cadastro de premissas"
             />
-            
+
             {error && <p className="text-red-600 mb-4">{error}</p>}
             <div className="p-6">
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
-                        <InputForm 
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+                        <InputForm
                             label="Premissa"
                             placeholder="DIgite o nome da premissa"
                             type="text"
                             name="name"
                             control={form.control}
                         />
-                        
-                        <InputForm 
+
+                        <InputForm
                             label="Categoria"
                             placeholder="DIgite a categoria da premissa"
                             type="text"
@@ -78,7 +80,7 @@ export default function NewPremise() {
                             control={form.control}
                         />
 
-                        <InputForm 
+                        <InputForm
                             label="Ano"
                             placeholder="Informe o ano da premissa"
                             type="number"
@@ -88,15 +90,23 @@ export default function NewPremise() {
                                 const value = Number(e.target.value); // Garante que o valor seja convertido para número
                                 form.setValue("year", value); // Atualiza o valor manualmente no react-hook-form
                             }}
-                            
-                        />
 
-                        <Button type="submit" disabled={!form.formState.isValid}>
-                            {isSubmitting ? "Enviando..." : "Cadastrar"}
-                        </Button>
+                        />
+                        <div className="flex items-center space-x-4">
+                            <Button variant="outline" type="submit" disabled={!form.formState.isValid}>
+                                {isSubmitting ? "Enviando..." : "Cadastrar"}
+                            </Button>
+                            <Button asChild>
+                                <Link href={"/"}>
+                                    Cancelar
+                                </Link>
+                            </Button>
+
+                        </div>
+
                     </form>
                 </Form>
-            </div>            
-        </main >
+            </div>
+        </ >
     );
 }
