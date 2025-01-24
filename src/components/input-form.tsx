@@ -1,5 +1,5 @@
+// File: src/components/input-form.tsx
 import {
-    Form,
     FormControl,
     FormDescription,
     FormField,
@@ -9,34 +9,49 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-type InputFormProps = {
-    name: string,
+interface InputFormProps {
     label: string,
-    placeholder: string,
-    type: string,
+    placeholder?: string,
+    type?: string,
+    description?: string,
+    name: string,
     control: any,
-    onChange?: any
+    onChange?: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 };
 
-const InputForm = ({ name, label, placeholder, type, control, onChange }: InputFormProps) => (
-    <FormField
-        control={control}
-        name={name}
-        render={({ field }) => (
-            <FormItem>
-                <FormLabel>{label}</FormLabel>
-                <FormControl>
-                    <Input
-                        type={type}
-                        placeholder={placeholder}
-                        {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
-                    />
-                </FormControl>
-                <FormMessage />
-            </FormItem>
-        )}
-    />
-);
+const InputForm: React.FC<InputFormProps> = ({
+    label,
+    placeholder,
+    type = "text",
+    description,
+    name,
+    control,
+    onChange,
+}) => {
+    return (
+        <FormField
+            control={control}
+            name={name}
+            render={({ field }) => (
+                <FormItem>
+                    <FormLabel>{label}</FormLabel>
+                    <FormControl>
+                        <Input
+                            {...field}
+                            type={type}
+                            placeholder={placeholder}
+                            onChange={(e) => {
+                                field.onChange(e); // Integração com o React Hook Form
+                                if (onChange) onChange(e) // Chama a função personalizada se fornecida
+                            }}
+                        />
+                    </FormControl>
+                    {description && <FormDescription>{description}</FormDescription>}
+                    <FormMessage />
+                </FormItem>
+            )}
+        />
+    )
+};
 
 export default InputForm;
