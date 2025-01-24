@@ -1,50 +1,25 @@
+// File: src/app/premises/new/page.tsx
 "use client";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { metadata } from "@/app/metadata";
 import api from "@/services/api";
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    BreadcrumbList,
-    BreadcrumbPage,
-    BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Separator } from "@/components/ui/separator";
-import { ModeToggle } from "@/components/dark-mode";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
-import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
+import InputForm from "@/components/input-form";
+import HeaderPage from "@/components/header-page";
 
 const formSchema = z.object({
     name: z.string().min(1, "O nome da premissa é obrigatório"),
     category: z.string().min(1, "A categoria é obrigatória"),
-    year: z.number().int().positive("O ano deve ser um número positivo"),
+    year: z.number().int().positive("O ano deve ser um número positivo").lte(new Date().getFullYear() + 10, "O ano não pode ser muito no futuro"),
 });
 
-const inputStyle = "w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary";
-
 export default function NewPremise() {
-
-    useEffect(() => {
-        document.title = metadata.premises.title;
-        document.querySelector('meta[name="description"]')?.setAttribute("content", metadata.premises.description);
-    }, [])
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -78,87 +53,42 @@ export default function NewPremise() {
 
     return (
         <div>
-            <header className="flex items-center justify-between border-b px-4">
-                <div className="flex sticky top-0 bg-background  h-16 shrink-0 items-center gap-2 ">
-                    <SidebarTrigger className="ml-1" />
-                    <Separator orientation="vertical" className="mr-2 h-4" />
-                    <Breadcrumb>
-                        <BreadcrumbList>
-                            <BreadcrumbItem className="hidden md:block">
-                                <BreadcrumbLink href={"/premises"}>
-                                    Premissas
-                                </BreadcrumbLink>
-                            </BreadcrumbItem>
-                            <BreadcrumbSeparator className="hidden md:block" />
-                            <BreadcrumbItem>
-                                <BreadcrumbPage>Cadastro de premissas</BreadcrumbPage>
-                            </BreadcrumbItem>
-                        </BreadcrumbList>
-                    </Breadcrumb>
-                </div>
-                <ModeToggle />
-            </header>
-            {/* <Title text="Cadastrar Premissa" /> */}
+            <HeaderPage
+                breadcrumbItems={[{label: "Premissas", href: "/premises"}]}
+                currentPage="Cadastro de premissas"
+            />
+            
             {error && <p className="text-red-600 mb-4">{error}</p>}
 
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                    <FormField
-                        control={form.control}
+                    <InputForm 
+                        label="Premissa"
+                        placeholder="DIgite o nome da premissa"
+                        type="text"
                         name="name"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Premissa</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        type="text"
-                                        placeholder="DIgite o nome da premissa"
-                                        className={inputStyle}
-                                        autoComplete="off"
-                                        {...field}
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-
-                    <FormField
                         control={form.control}
+                    />
+                    
+                    <InputForm 
+                        label="Categoria"
+                        placeholder="DIgite a categoria da premissa"
+                        type="text"
                         name="category"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Categoria</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        type="text"
-                                        placeholder="DIgite a categoria da premissa"
-                                        autoComplete="off"
-                                        {...field}
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
+                        control={form.control}
                     />
 
-                    <FormField
-                        control={form.control}
+                    <InputForm 
+                        label="Ano"
+                        placeholder="Informe o ano da premissa"
+                        type="number"
                         name="year"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Ano</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        type="number"
-                                        placeholder="Informe o ano da premissa"
-                                        {...field}
-                                        onChange={(e) => field.onChange(Number(e.target.value))}
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
+                        control={form.control}
+                        onChange={(e) => {
+                            const value = Number(e.target.value); // Garante que o valor seja convertido para número
+                            form.setValue("year", value); // Atualiza o valor manualmente no react-hook-form
+                        }}
+                        
                     />
 
                     <Button type="submit" disabled={!form.formState.isValid}>
