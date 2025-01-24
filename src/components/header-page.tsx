@@ -15,8 +15,8 @@ import {
 import { ModeToggle } from "@/components/dark-mode";
 
 interface HeaderPageProps {
-    breadcrumbItems: { label: string; href?: string }[];
-    currentPage: string;
+    breadcrumbItems?: { label: string; href?: string }[];
+    currentPage?: string;
 }
 
 const HeaderPage: React.FC<HeaderPageProps> = ({ breadcrumbItems, currentPage }) => {
@@ -27,7 +27,7 @@ const HeaderPage: React.FC<HeaderPageProps> = ({ breadcrumbItems, currentPage })
                 <Separator orientation="vertical" className="mr-2 h-4" />
                 <Breadcrumb>
                     <BreadcrumbList>
-                        {breadcrumbItems.map((item, index) => (
+                        {breadcrumbItems?.map((item, index) => (
                             <BreadcrumbItem key={index} className="hidden md:block">
                                 {item.href ? (
                                     <BreadcrumbLink href={item.href}>{item.label}</BreadcrumbLink>
