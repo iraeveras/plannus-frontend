@@ -1,10 +1,9 @@
 
 import { cookies } from "next/headers";
 import { ThemeProvider } from "@/components/theme-provider";
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 import "./globals.css";
-import { Separator } from "@/components/ui/separator";
 
 export default async function RootLayout({
   children,
@@ -27,7 +26,7 @@ export default async function RootLayout({
           <SidebarProvider defaultOpen={defaultOpen}>
             <AppSidebar />
             <SidebarInset >
-              <main>
+              <main className="min-h-screen">
                 {children}
               </main>
             </SidebarInset>
