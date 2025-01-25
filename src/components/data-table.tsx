@@ -33,33 +33,49 @@ const DataTable = <T extends Record<string, any>>({
     actions,
 }: DataTableProps<T>) => {
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(5);
+    const [itemsPerPage] = useState(5);
     const [sortConfig, setSortConfig] = useState<{ key: keyof T; direction: "asc" | "desc" } | null>(null);
     const [filters, setFilters] = useState<Record<keyof T, string>>({} as Record<keyof T, string>);
     const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
 
-    // Paginação
-    const totalPages = Math.ceil(data.length / itemsPerPage);
-    const paginatedData = data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+    const processedData = useMemo(() => {
+        let filtered = [...data];
 
-    // Ordenação
-    const sortedData = sortConfig
-        ? [...data].sort((a, b) => {
-            const valueA = a[sortConfig.key];
+        // Aplicar filtro
+        if (filters) {
+            filtered = filtered.filter((row) =>
+                Object.entries(filters).every(([key, value]) =>
+                    String(row[key as keyof T]).toLowerCase().includes(value.toLowerCase())
+                )
+            );
+        }
+
+        // Aplicar Ordenação
+        if (sortConfig) {
+            filtered.sort((a, b) => {
+                const valueA = a[sortConfig.key];
             const valueB = b[sortConfig.key];
 
             if (valueA < valueB) return sortConfig.direction === "asc" ? -1 : 1;
             if (valueA > valueB) return sortConfig.direction === "asc" ? 1 : -1;
             return 0;
-        })
-        : data;
+            });
+        }
 
-    // Filtragem
-    const filteredData = sortedData.filter((row) =>
-        Object.entries(filters).every(([key, value]) =>
-            String(row[key as keyof T]).toLowerCase().includes(value.toLowerCase())
-        )
-    );
+        return filtered;
+    }, [data, filters, sortConfig]);
+
+    // Paginação
+    const totalPages = Math.ceil(processedData.length / itemsPerPage);
+    const paginatedData = processedData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+    const handleSort = (key: keyof T) => {
+        setSortConfig((prev) =>
+            prev?.key === key
+                ? { key, direction: prev.direction === "asc" ? "desc" : "asc" }
+                : { key, direction: "asc" }
+        );
+    };
 
     // Seleção de linhas
     const toggleRowSelection = (id: string) => {
@@ -70,14 +86,6 @@ const DataTable = <T extends Record<string, any>>({
             updatedSelection.add(id);
         }
         setSelectedRows(updatedSelection);
-    };
-
-    const handleSort = (key: keyof T) => {
-        setSortConfig((prev) =>
-            prev?.key === key
-                ? { key, direction: prev.direction === "asc" ? "desc" : "asc" }
-                : { key, direction: "asc" }
-        );
     };
 
     return (
@@ -149,11 +157,12 @@ const DataTable = <T extends Record<string, any>>({
                         ))
                     ) : (
                         <TableRow>
-                            <TableCell colSpan={columns.length} className="text-center py-4">Nenhum dado encontrado</TableCell>
+                            <TableCell colSpan={columns.length + 2} className="text-center py-4">Nenhum dado encontrado</TableCell>
                         </TableRow>
                     )}
                 </TableBody>
             </Table>
+
             {/* Paginação */}
             <div className="flex justify-between items-center px-4 py-2 border-t">
                 <div>
