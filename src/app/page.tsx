@@ -36,17 +36,17 @@ export default function Dashboard() {
       </header>
       {/* <h1 className="text-3xl font-bold text-primary">Dashboard</h1> */}
       <div className="mt-6 ml-6 mr-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div className="p-4 bg-white rounded shadow-2xl">
-          <h2 className="text-lg font-bold">Resumo Financeiro</h2>
-          <p className="mt-2 text-gray-700">Total de Orçamento: R$ 1.000.000,00</p>
+        <div className="p-4 bg-sidebar-accent rounded shadow-2xl">
+          <h2 className="text-lg text-primary font-bold">Resumo Financeiro</h2>
+          <p className="mt-2 text-primary">Total de Orçamento: R$ 1.000.000,00</p>
         </div>
-        <div className="p-4 bg-white rounded shadow-2xl">
-          <h2 className="text-lg font-bold">Funcionários</h2>
-          <p className="mt-2 text-gray-700">Total: 120</p>
+        <div className="p-4 bg-sidebar-accent rounded shadow-2xl">
+          <h2 className="text-lg text-primary font-bold">Funcionários</h2>
+          <p className="mt-2 text-primary">Total: 120</p>
         </div>
-        <div className="p-4 bg-white rounded shadow-2xl">
-          <h2 className="text-lg font-bold">Empresas</h2>
-          <p className="mt-2 text-gray-700">Total: 10</p>
+        <div className="p-4 bg-sidebar-accent rounded shadow-2xl">
+          <h2 className="text-lg text-primary font-bold">Empresas</h2>
+          <p className="mt-2 text-primary">Total: 10</p>
         </div>
       </div>
     </>
