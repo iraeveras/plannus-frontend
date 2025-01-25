@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
+import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 
 export default async function RootLayout({
@@ -27,6 +28,7 @@ export default async function RootLayout({
             <AppSidebar />
             <SidebarInset >
               <main className="min-h-screen">
+                <Toaster/>
                 {children}
               </main>
             </SidebarInset>

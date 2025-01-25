@@ -9,6 +9,7 @@ import HeaderPage from "@/components/header-page";
 import { FilePenLine, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import DataTable from "@/components/data-table";
+import { toast } from "@/hooks/use-toast";
 
 type Premise = {
     id: string;
@@ -50,9 +51,18 @@ export default function PremisesList() {
         try {
             await api.delete(`/premises/${id}`);
             setPremises(premises.filter((premise: any) => premise.id !== id));
+            toast({
+                title: "Sucesso!",
+                description: "Premissa excluida com sucesso!",
+                variant: "success", // Você pode usar 'destructive' para erro
+            });
         } catch (err) {
             console.error("Erro ao excluir premissa:", err);
-            setError("Erro ao excluir a premissa.");
+            toast({
+                title: "Erro",
+                description: "Erro ao excluir a premissa.",
+                variant: "destructive",
+            });
         }
     };
 

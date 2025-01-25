@@ -8,12 +8,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { buttonVariants } from "@/components/ui/button";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import InputForm from "@/components/input-form";
 import HeaderPage from "@/components/header-page";
 import Link from "next/link";
+import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
     name: z.string().min(1, "O nome da premissa é obrigatório"),
@@ -35,19 +35,31 @@ export default function NewPremise() {
 
     const [error, setError] = useState("");
     const router = useRouter();
-    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const { toast } = useToast();
+
+
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        setError("");
         setIsSubmitting(true);
 
         try {
             await api.post("/premises", values);
-            alert("Premissa cadastrada com sucesso!");
+            toast({
+                title: "Sucesso!",
+                description: "Premissa cadastrada com sucesso!",
+                variant: "success", // Você pode usar 'destructive' para erro
+            });
             router.push("/premises");
         } catch (err: any) {
             console.error("Erro ao cadastrar premissa:", err.response?.data || err.message);
-            setError(err.response?.data?.error || "Erro ao cadastrar premissa");
+            
+            toast({
+                title: "Erro",
+                description: "Ocorreu um erro ao cadastrar a premissa.",
+                variant: "destructive",
+            });
+
         } finally {
             setIsSubmitting(false);
         }

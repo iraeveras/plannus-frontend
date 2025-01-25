@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import InputForm from "@/components/input-form";
 import HeaderPage from "@/components/header-page";
+import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
     name: z.string().min(1, "O nome da premissa é obrigatório"),
@@ -32,6 +33,7 @@ export default function EditPremise() {
     const [error, setError] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const { toast } = useToast();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -60,16 +62,23 @@ export default function EditPremise() {
 
     // Submeter alterações
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        setError("");
         setIsSubmitting(true);
 
         try {
             await api.put(`/premises/${id}`, values);
-            alert("Premissa atualizada com sucesso!");
+            toast({
+                title: "Sucesso!",
+                description: "Premissa atualizada com sucesso!",
+                variant: "success", // Você pode usar 'destructive' para erro
+            });
             router.push("/premises");
         } catch (err: any) {
             console.error("Erro ao atualizar premissa:", err.response?.data || err.message);
-            setError(err.response?.data?.error || "Erro ao atualizar a premissa.");
+            toast({
+                title: "Erro",
+                description: "Ocorreu um erro ao editar a premissa.",
+                variant: "destructive",
+            });
         } finally {
             setIsSubmitting(false);
         }
