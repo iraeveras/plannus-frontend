@@ -94,7 +94,7 @@ export default function NewPremise() {
                         />
                         <div className="flex items-center space-x-4">
                             <Button variant="outline" type="submit" disabled={!form.formState.isValid}>
-                                {isSubmitting ? "Enviando..." : "Cadastrar"}
+                                {isSubmitting ? "Salvando cadastro..." : "Cadastrar"}
                             </Button>
                             <Button asChild>
                                 <Link href={"/"}>
