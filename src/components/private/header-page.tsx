@@ -12,7 +12,7 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { ModeToggle } from "@/components/dark-mode";
+import { ModeToggle } from "@/components/layout/dark-mode";
 
 interface HeaderPageProps {
     breadcrumbItems?: { label: string; href?: string }[];

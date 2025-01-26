@@ -3,7 +3,7 @@
 // File: src/app/dashboard/page.tsx
 
 import { metadata } from "@/app/metadata";
-import { ModeToggle } from "@/components/dark-mode";
+import { ModeToggle } from "@/components/layout/dark-mode";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";

@@ -3,12 +3,11 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import api from "@/services/api";
+import api from "@/lib/api";
 import { metadata } from "@/app/metadata";
-import HeaderPage from "@/components/header-page";
+import HeaderPage from "@/components/private/header-page";
 import { FilePenLine, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import DataTable from "@/components/data-table";
+import DataTable from "@/components/data-display/data-table";
 import { toast } from "@/hooks/use-toast";
 
 type Premise = {

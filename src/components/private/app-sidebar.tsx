@@ -17,13 +17,10 @@ import {
     SidebarFooter,
     SidebarRail,
 } from "@/components/ui/sidebar";
-import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
-import { NavSecondary } from "@/components/nav-secondary"
-import { NavUser } from "@/components/nav-user"
-
-import Link from "next/link";
-import { Separator } from "@radix-ui/react-separator";
+import { NavMain } from "@/components/private/nav-main";
+import { NavProjects } from "@/components/private/nav-projects";
+import { NavSecondary } from "@/components/private/nav-secondary";
+import { NavUser } from "@/components/private/nav-user";
 
 // Menu items.
 const data = {

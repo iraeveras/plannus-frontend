@@ -1,8 +1,8 @@
 
 import { cookies } from "next/headers";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/context/theme-provider";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
-import { AppSidebar } from "@/components/app-sidebar"
+import { AppSidebar } from "@/components/private/app-sidebar"
 import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 

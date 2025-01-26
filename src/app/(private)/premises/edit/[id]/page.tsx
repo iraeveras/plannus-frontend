@@ -3,15 +3,15 @@
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { metadata } from "@/app/metadata";
-import api from "@/services/api";
+import api from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import InputForm from "@/components/input-form";
-import HeaderPage from "@/components/header-page";
+import InputForm from "@/components/forms/input-form";
+import HeaderPage from "@/components/private/header-page";
 import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
