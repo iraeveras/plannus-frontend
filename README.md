@@ -37,78 +37,88 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 ```
 src/
 ├── app/
-│   ├── (public)/              # Páginas públicas
-│   │   ├── landing/           # Landing page
+│   ├── (public)/               # Acesso público
+│   │   ├── landing/            # Landing page
 │   │   │   ├── page.tsx
-│   │   │   └── components/
-│   │   ├── login/             # Página de login
-│   │   │   └── page.tsx
-│   │   └── register/          # Página de registro (se necessário)
+│   │   └── login/              # Página de login
 │   │       └── page.tsx
-│   ├── (private)/             # Páginas privadas (acesso autenticado)
-│   │   ├── companies/
-│   │   │   ├── new/
-│   │   │   │   └── page.tsx
-│   │   │   └── page.tsx
-│   │   ├── dashboard/         # Página inicial do sistema
-│   │   │   └── page.tsx
-│   │   ├── employees/
-│   │   │   └── page.tsx
-│   │   ├── premises/
-│   │   │   ├── edit/
-│   │   │   │   └── [id]/
-│   │   │   │       └── page.tsx
-│   │   │   ├── new/
-│   │   │   │   └── page.tsx
-│   │   │   └── page.tsx
-│   │   ├── settings/
-│   │   │   └── page.tsx       # Configurações do sistema
-│   │   ├── layout.tsx         # Layout privado compartilhado
-│   │   ├── metadata.ts        # Metadados específicos do sistema autenticado
-│   │   └── page.tsx           # Página inicial autenticada (se necessário)
-│   ├── globals.css            # Estilo global
-│   ├── layout.tsx             # Layout global compartilhado (Landing/Login)
-│   └── page.tsx               # Página inicial para visitantes
+│   └── (private)/              # Acesso autenticado
+│       ├── dashboard/          # Página inicial (admin, manager, supervisor, user)
+│       │   └── page.tsx
+│       ├── (admin)/            # Rotas exclusivas para admin
+│       │   ├── companies/
+│       │   │   ├── new/
+│       │   │   │   └── page.tsx
+│       │   │   └── page.tsx
+│       │   ├── employees/
+│       │   │   └── page.tsx
+│       │   ├── reports/
+│       │   │   └── page.tsx
+│       │   ├── settings/       # Configurações globais (e.g., permissões)
+│       │   │   └── page.tsx
+│       │   └── layout.tsx      # Layout exclusivo para admin
+│       ├── (manager)/          # Rotas exclusivas para managers
+│       │   ├── teams/
+│       │   │   └── page.tsx
+│       │   ├── reports/
+│       │   │   └── page.tsx
+│       │   └── layout.tsx
+│       ├── (supervisor)/       # Rotas exclusivas para supervisores
+│       │   ├── team/
+│       │   │   └── page.tsx
+│       │   └── layout.tsx
+│       ├── (user)/             # Rotas exclusivas para usuários comuns
+│       │   ├── profile/
+│       │   │   └── page.tsx
+│       │   ├── dashboard/
+│       │   │   └── page.tsx
+│       │   └── layout.tsx
+│       ├── layout.tsx          # Layout padrão compartilhado entre todas as rotas autenticadas
+│       └── metadata.ts         # Metadados globais
 ├── components/
-│   ├── ui/                    # Componentes de interface reutilizáveis
-│   ├── public/                # Componentes específicos para páginas públicas
-│   │   ├── hero.tsx           # Componente para landing page
-│   │   └── features.tsx       # Destaques ou funcionalidades da landing page
-│   ├── private/               # Componentes específicos para páginas autenticadas
-│   │   ├── sidebar.tsx        # Sidebar do sistema
-│   │   └── header.tsx         # Header do sistema autenticado
-│   ├── forms/                 # Componentes específicos de formulários
-│   │   ├── input-form.tsx
-│   │   └── select-form.tsx
-│   ├── data-display/          # Componentes para exibição de dados
-│   │   ├── data-table.tsx
-│   │   └── card.tsx
-│   ├── notifications/         # Toasts, modais, etc.
+│   ├── ui/                     # Componentes de interface reutilizáveis
+│   │   ├── avatar.tsx
+│   │   ├── button.tsx
+│   │   ├── form.tsx
+│   │   ├── input.tsx
 │   │   ├── toast.tsx
-│   │   └── toaster.tsx
-│   └── layout/                # Componentes de layout genéricos
+│   │   └── tooltip.tsx
+│   ├── navigation/             # Componentes de navegação
+│   │   ├── sidebar.tsx         # Sidebar principal
+│   │   ├── nav-admin.tsx       # Navegação exclusiva para admin
+│   │   ├── nav-manager.tsx     # Navegação exclusiva para managers
+│   │   ├── nav-supervisor.tsx  # Navegação exclusiva para supervisores
+│   │   └── nav-user.tsx        # Navegação para usuários comuns
+│   ├── auth/                   # Componentes de autenticação
+│   │   ├── login-form.tsx
+│   │   └── register-form.tsx
+│   ├── data/                   # Componentes relacionados a dados
+│   │   ├── data-table.tsx
+│   │   ├── card.tsx
+│   │   └── chart.tsx
+│   └── layout/                 # Componentes de layout
 │       ├── breadcrumb.tsx
-│       ├── button.tsx
-│       ├── collapsible.tsx
-│       ├── dropdown-menu.tsx
+│       ├── header.tsx
 │       └── separator.tsx
-├── context/                   # Gerenciadores de estado compartilhados
-│   ├── auth-context.tsx       # Contexto de autenticação
-│   ├── theme-context.tsx      # Contexto de tema
-│   └── sidebar-context.tsx    # Controle do estado do sidebar
+├── middleware/
+│   ├── auth.ts                # Middleware de autenticação (Next.js Middleware API)
+│   └── permission.ts          # Middleware para verificar permissões (admin/manager/supervisor/user)
+├── context/
+│   ├── AuthContext.tsx        # Gerencia autenticação do usuário (JWT, perfil)
+│   ├── PermissionContext.tsx  # Gerencia permissões (admin, manager, etc.)
+│   └── SidebarContext.tsx     # Estado do sidebar (colapsado ou expandido)
 ├── hooks/
-│   ├── use-mobile.tsx         # Hook para detectar dispositivos móveis
+│   ├── use-auth.ts            # Hook para acessar o contexto de autenticação
+│   ├── use-permissions.ts     # Hook para verificar permissões
 │   ├── use-toast.ts           # Hook para exibir toasts
-│   └── use-auth.tsx           # Hook para verificar estado de autenticação
+│   └── use-sidebar.ts         # Hook para gerenciar o estado do sidebar
 ├── lib/
-│   ├── api.ts                 # Configurações da API
-│   ├── auth.ts                # Métodos auxiliares de autenticação (e.g., JWT parsing)
-│   └── utils.ts               # Funções utilitárias
-├── middleware/                # Middlewares do Next.js para controle de acesso
-│   └── auth.ts                # Middleware para autenticação
-└── utils/                     # Funções auxiliares (não específicas do domínio)
-    ├── format-date.ts
-    ├── validators.ts
-    └── constants.ts
+│   ├── api-client.ts          # Configuração do cliente Axios
+│   ├── token.ts               # Manipulação de tokens JWT
+│   └── utils.ts               # Funções auxiliares
+├── utils/
+│   ├── format-date.ts         # Formatação de datas
+│   ├── validators.ts          # Funções de validação (e.g., validação de e-mails)
+│   └── constants.ts           # Constantes globais
 ```
 
