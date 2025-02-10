@@ -1,54 +1,50 @@
+// File: src/app/page.tsx (Landing page)
 
 "use client"
-// File: src/app/dashboard/page.tsx
 
-import { metadata } from "@/app/metadata";
-import { ModeToggle } from "@/components/layout/dark-mode";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
-import { Separator } from "@/components/ui/separator";
-import { SidebarTrigger } from "@/components/ui/sidebar";
-import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
+import { Button } from "@/components/ui/button";
+import { Topbar } from "@/components/public/topbar";
+import { Footer } from "@/components/public/footer";
+import { useEffect, useState } from "react";
 
-export default function Dashboard() {
+export default function LandingPage() {
+  const { user } = useAuth();
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
 
+  // Se o usuário estiver autenticado, redireciona para o dashboard
   useEffect(() => {
-    document.title = metadata.dashboard.title;
-    document
-      .querySelector('meta[name="description"]')
-      ?.setAttribute("content", metadata.dashboard.description);
-  }, []);
+    if (user) {
+      router.push("/dashboard")
+    } else {
+      setIsLoading(false);
+    }
+  }, [user, router]);
+
+  if (isLoading) {
+    return <div>Carregando...</div>
+  }
+  
 
   return (
-    <>
-      <header className="flex items-center justify-between border-b px-4">
-        <div className="flex sticky top-0 bg-background  h-16 shrink-0 items-center gap-2 ">
-          <SidebarTrigger className="ml-1" />
-          <Separator orientation="vertical" className="mr-2 h-4" />
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbPage>Home</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </div>
-        <ModeToggle />
-      </header>
-      {/* <h1 className="text-3xl font-bold text-primary">Dashboard</h1> */}
-      <div className="mt-6 ml-6 mr-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div className="p-4 bg-sidebar-accent rounded shadow-2xl">
-          <h2 className="text-lg text-primary font-bold">Resumo Financeiro</h2>
-          <p className="mt-2 text-primary">Total de Orçamento: R$ 1.000.000,00</p>
-        </div>
-        <div className="p-4 bg-sidebar-accent rounded shadow-2xl">
-          <h2 className="text-lg text-primary font-bold">Funcionários</h2>
-          <p className="mt-2 text-primary">Total: 120</p>
-        </div>
-        <div className="p-4 bg-sidebar-accent rounded shadow-2xl">
-          <h2 className="text-lg text-primary font-bold">Empresas</h2>
-          <p className="mt-2 text-primary">Total: 10</p>
+    <div className="flex flex-col min-h-screen">
+      <Topbar />
+      <div className="flex-grow flex items-center justify-center bg-gray-100 dark:bg-gray-900">
+        <div className="max-w-3xl text-center">
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
+            Bem-vindo ao Plannus
+          </h1>
+          <p className="mt-4 text-gray-600 dark:text-gray-300">
+            O sistema de gestão de orçamento empresarial para controle e planejamento estratégico.
+          </p>
+          <Button className="mt-6" onClick={() => router.push("/login")}>
+            Acessar o Sistema
+          </Button>
         </div>
       </div>
-    </>
+      <Footer />
+    </div>
   );
 }
