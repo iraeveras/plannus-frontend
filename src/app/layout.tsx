@@ -1,10 +1,10 @@
-
+// File: src/app/layout.tsx
 import { cookies } from "next/headers";
+import { Suspense } from "react";
 import { ThemeProvider } from "@/context/theme-provider";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
-import { AppSidebar } from "@/components/private/app-sidebar"
-import { Toaster } from "@/components/ui/toaster";
+import { AuthProvider } from "@/context/AuthContext";
 import "./globals.css";
+import { ClientLayout } from "@/components/layout/clientLayout";
 
 export default async function RootLayout({
   children,
@@ -12,28 +12,26 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  const cookieStore = await cookies()
-  const defaultOpen = cookieStore.get("sidebar:state")?.value === "true"
+  const cookieStore = cookies()
+  const defaultOpen = (await cookieStore).get("sidebar:state")?.value === "true"
 
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <body>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <SidebarProvider defaultOpen={defaultOpen}>
-            <AppSidebar />
-            <SidebarInset >
-              <main className="min-h-screen">
-                <Toaster/>
+        <AuthProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <ClientLayout defaultOpen={defaultOpen}>
+              <Suspense fallback={<div>Carregando...</div>}>
                 {children}
-              </main>
-            </SidebarInset>
-          </SidebarProvider>
-        </ThemeProvider>
+              </Suspense>
+            </ClientLayout>
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );
