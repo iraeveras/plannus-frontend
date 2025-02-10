@@ -1,4 +1,7 @@
+// File: src/components/private/nav-main.tsx
+
 "use client"
+
 import { ChevronRight, type LucideIcon } from "lucide-react"
 import {
     Collapsible,

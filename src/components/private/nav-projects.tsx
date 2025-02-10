@@ -1,4 +1,7 @@
+// File: src/components/private/nav-projects.tsx
+
 "use client"
+
 import {
     Folder,
     MoreHorizontal,

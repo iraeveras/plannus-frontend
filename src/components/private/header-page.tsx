@@ -1,4 +1,5 @@
-// File: src/components/header-page.tsx
+// File: src/components/private/header-page.tsx
+
 "use client"
 
 import React from "react";

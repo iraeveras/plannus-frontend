@@ -1,4 +1,7 @@
+// File: src/components/private/app-sidebar.tsx
+
 "use client"
+
 import * as React from "react";
 import { BookOpen, Bot, Command, Frame, LifeBuoy, Map, PieChart, Send, Settings2, SquareTerminal, Gauge, ChevronRight, } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
@@ -21,18 +24,14 @@ import { NavMain } from "@/components/private/nav-main";
 import { NavProjects } from "@/components/private/nav-projects";
 import { NavSecondary } from "@/components/private/nav-secondary";
 import { NavUser } from "@/components/private/nav-user";
+import { useAuth } from "@/context/AuthContext";
 
 // Menu items.
 const data = {
-    user: {
-        name: "Iraê Veras",
-        email: "irae@plazacasaforte.com.br",
-        avatar: "/avatars/irae.jpg",
-    },
     navMain: [
         {
             title: "Dashboard",
-            url: "/",
+            url: "/dashboard",
             icon: Gauge,
         },
         {
@@ -153,6 +152,9 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+    const { user, logout } = useAuth();
+    console.log("AppSidebar -> user:", user); // Verifique os dados do usuário
+
     return (
         <Sidebar collapsible="icon" variant="inset" {...props}>
             <SidebarHeader>
@@ -182,7 +184,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <NavSecondary items={data.navSecondary} className="mt-auto" />
             </SidebarContent>
             <SidebarFooter>
-                <NavUser user={data.user} />
+                <NavUser user={user} logout={logout} />
             </SidebarFooter>
             <SidebarRail />
         </Sidebar>
