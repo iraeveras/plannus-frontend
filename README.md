@@ -38,7 +38,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 src/
 ├── app/
 │   ├── (public)/               # Acesso público
-│   │   ├── landing/            # Landing page
+│   │   ├── (landing)/            # Landing page
 │   │   │   ├── page.tsx
 │   │   └── login/              # Página de login
 │   │       └── page.tsx
