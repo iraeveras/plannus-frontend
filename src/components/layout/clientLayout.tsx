@@ -9,7 +9,7 @@ import { Toaster } from "@/components/ui/toaster";
 
 export function ClientLayout({ children, defaultOpen }: { children: React.ReactNode; defaultOpen: boolean }) {
     const pathname = usePathname();
-    const isPublicPage = ["/", "/landing", "/login"].includes(pathname);
+    const isPublicPage = ["/", "/landing", "/about", "/contact", "/features", "/terms", "/privacy", "/login"].includes(pathname);
 
     return (
         <SidebarProvider defaultOpen={defaultOpen}>
