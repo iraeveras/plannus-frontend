@@ -1,4 +1,12 @@
 export const metadata = {
+    home: {
+        title: "Sistema Plannus",
+        description: "Landing Page - Sistema Plannus"
+    },
+    login: {
+        title: "Login - Sistema Plannus",
+        description: "Página de login - Sistema Plannus"
+    },
     premises: {
         title: "Cadastrar Premissa - Plannus",
         description: "Página para cadastrar novas premissas no sistema Plannus.",
