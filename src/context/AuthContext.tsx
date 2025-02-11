@@ -36,8 +36,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 throw Error("Token não encontrado.");
             }
 
-            const res = await fetch("http://localhost:5000/users/me" , {
-                headers: {Authorization: `Bearer ${token}`},
+            const res = await fetch("http://localhost:5000/users/me", {
+                headers: { Authorization: `Bearer ${token}` },
             });
 
             if (!res.ok) {
@@ -47,13 +47,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                     `Erro na requisição: ${res.status} ${res.statusText}. ${errorData.message || ""}`
                 );
             }
-            
+
             const data = await res.json();
-            console.log("Dados do usuário:", data.user); // Log dos dados do usuário
-            setUser(data.user); 
+            setUser(data.user);
         } catch (error) {
             console.error("Erro ao buscar dados do usuário:", error);
-            logout();            
+            logout();
         }
     }
 
