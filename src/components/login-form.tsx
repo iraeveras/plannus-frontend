@@ -4,6 +4,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -15,7 +16,7 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"form">) {
-  const [username, setUsername ] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState<boolean>(false);
   const { setUser } = useAuth();
@@ -60,11 +61,11 @@ export function LoginForm({
 
       router.push("/dashboard");
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : "Erro desconhecido";   
+      const errorMessage = error instanceof Error ? error.message : "Erro desconhecido";
       toast({
-          title: "Erro!",
-          description: errorMessage,
-          variant: "destructive",
+        title: "Erro!",
+        description: errorMessage,
+        variant: "destructive",
       });
     } finally {
       setLoading(false)
@@ -84,10 +85,10 @@ export function LoginForm({
 
         <div className="grid gap-2">
           <Label htmlFor="username">Usuário</Label>
-          <Input 
-            id="username" 
-            type="text" 
-            placeholder="seu nome de usuário" 
+          <Input
+            id="username"
+            type="text"
+            placeholder="seu nome de usuário"
             required
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -98,8 +99,8 @@ export function LoginForm({
           <div className="flex items-center">
             <Label htmlFor="password">Senha</Label>
           </div>
-          <Input 
-            id="password" 
+          <Input
+            id="password"
             type="password"
             placeholder="digite sua senha"
             required
@@ -110,6 +111,11 @@ export function LoginForm({
 
         <Button type="submit" className="w-full" disabled={loading}>
           {loading ? "autenticando..." : "Login"}
+        </Button>
+        <Button variant="destructive" className="w-full">
+          <Link href={"/"} className="w-full" >
+            Cancelar
+          </Link>
         </Button>
       </div>
     </form>
