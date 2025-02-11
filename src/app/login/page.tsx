@@ -1,8 +1,18 @@
-import { GalleryVerticalEnd } from "lucide-react"
-
-import { LoginForm } from "@/components/login-form"
+"use client"
+import { GalleryVerticalEnd } from "lucide-react";
+import { LoginForm } from "@/components/login-form";
+import { metadata } from "@/app/metadata";
+import { useEffect } from "react";
 
 export default function LoginPage() {
+
+  useEffect(() => {
+    document.title = metadata.login.title;
+    document
+      .querySelector('meta[name="description"]')
+      ?.setAttribute("content", metadata.login.description);
+  }, []);
+
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">

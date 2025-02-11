@@ -8,11 +8,19 @@ import { Button } from "@/components/ui/button";
 import { Topbar } from "@/components/public/topbar";
 import { Footer } from "@/components/public/footer";
 import { useEffect, useState } from "react";
+import { metadata } from "@/app/metadata";
 
 export default function LandingPage() {
   const { user } = useAuth();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    document.title = metadata.home.title;
+    document
+      .querySelector('meta[name="description"]')
+      ?.setAttribute("content", metadata.home.description);
+  }, []);
 
   // Se o usuário estiver autenticado, redireciona para o dashboard
   useEffect(() => {
@@ -26,7 +34,7 @@ export default function LandingPage() {
   if (isLoading) {
     return <div>Carregando...</div>
   }
-  
+
 
   return (
     <div className="flex flex-col min-h-screen">
