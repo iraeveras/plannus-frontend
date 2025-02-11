@@ -58,7 +58,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     function logout() {
-        localStorage.removeItem("token")
+        localStorage.removeItem("token");
+        document.cookie = "token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT;";
         setUser(null)
         router.push("/")
     }
