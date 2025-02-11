@@ -53,7 +53,7 @@ export default function LandingPage() {
       {/* Espaço para compensar o header fixo */}
       <div className="h-20 "></div>
       {/* Seção: Carousel / Início */}
-      <section id="inicio" className="relative h-[500px] rounded-xl px-4">
+      <section id="inicio" className="relative md:h-[500px] rounded-xl px-4  h-40">
         <div className="relative w-full h-full overflow-hidden rounded-xl">
           {slides.map((slide, index) => (
             <div
@@ -65,8 +65,8 @@ export default function LandingPage() {
               {/* Sobreposição para realçar o texto */}
               <div className="absolute inset-0 bg-black opacity-30"></div>
               <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
-                <h1 className="text-5xl font-bold">{slide.title}</h1>
-                <p className="mt-4 text-2xl">{slide.subtitle}</p>
+                <h1 className="md:text-5xl text-xl font-bold">{slide.title}</h1>
+                <p className="mt-4 md:text-2xl text-xs">{slide.subtitle}</p>
               </div>
             </div>
           ))}
