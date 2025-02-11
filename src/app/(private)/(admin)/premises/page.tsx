@@ -34,6 +34,8 @@ export default function PremisesList() {
         const fetchPremises = async () => {
             try {
                 const response = await api.get("/premises");
+                console.log(response);
+
                 setPremises(response.data);
             } catch (err) {
                 console.error("Erro ao buscar premissas:", err);
