@@ -50,12 +50,12 @@ export function LoginForm({
       const data = await response.json()
       localStorage.setItem("token", data.token);
       document.cookie = `token=${data.token}; Path=/; Secure; SameSite=Strict`;
-      // setUser(data.user);
+      setUser(data.user);
 
       toast({
         title: "Sucesso!",
         description: "Login realizado com sucesso!",
-        variant: "success", // Você pode usar 'destructive' para erro
+        variant: "success",
       });
 
       router.push("/dashboard");
@@ -64,7 +64,7 @@ export function LoginForm({
       toast({
           title: "Erro!",
           description: errorMessage,
-          variant: "destructive", // Você pode usar 'destructive' para erro
+          variant: "destructive",
       });
     } finally {
       setLoading(false)
