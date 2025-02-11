@@ -25,7 +25,7 @@ export function ModeToggle() {
 
     return (
         <Button
-            className="border-none outline-none"
+            className="border-none outline-none bg-transparent"
             variant="outline"
             size="icon"
             onClick={() =>
