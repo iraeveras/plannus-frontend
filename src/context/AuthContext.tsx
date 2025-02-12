@@ -36,7 +36,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 throw Error("Token não encontrado.");
             }
 
-            const res = await fetch("http://localhost:5000/users/me", {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/me`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
