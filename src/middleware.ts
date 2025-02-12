@@ -9,5 +9,12 @@ export function middleware(req: NextRequest) {
 
 // Configuração para aplicar o middleware apenas em rotas específicas
 export const config = {
-  matcher: ["/dashboard/:path*", "/login"], // Aplica o middleware apenas nessas rotas
+  matcher: [
+    "/dashboard/:path*", 
+    "/premises/:path*",
+    "/employees/:path*",
+    "/reports/:path*",
+    "/settings/:path*",
+    "/login",
+  ], // Aplica o middleware apenas nessas rotas
 };
