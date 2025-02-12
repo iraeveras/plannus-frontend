@@ -1,16 +1,18 @@
-import { 
-    BookOpen, 
-    Bot, 
-    Command, 
-    Frame, 
-    LifeBuoy, 
-    Map, 
-    PieChart, 
-    Send, 
-    Settings2, 
-    SquareTerminal, 
-    Gauge, 
-    ChevronRight, 
+// File: src/constants/menu-items.ts
+
+import {
+    BookOpen,
+    Bot,
+    Command,
+    Frame,
+    LifeBuoy,
+    Map,
+    PieChart,
+    Send,
+    Settings2,
+    SquareTerminal,
+    Gauge,
+    ChevronRight,
 } from "lucide-react";
 
 // Menu items.
@@ -89,8 +91,8 @@ const data = {
             icon: Settings2,
             items: [
                 {
-                    title: "General",
-                    url: "#",
+                    title: "Usuários",
+                    url: "/users/new",
                 },
                 {
                     title: "Team",
