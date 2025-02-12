@@ -38,21 +38,27 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 src/
 ├── app/
 │   ├── (public)/               # Acesso público
-│   │   ├── (landing)/            # Landing page
-│   │   │   ├── page.tsx
-│   │   └── login/              # Página de login
-│   │       └── page.tsx
+│   │      └── 
+│   ├── login/                  # Página de login
+│   │   └── page.tsx
 │   └── (private)/              # Acesso autenticado
 │       ├── dashboard/          # Página inicial (admin, manager, supervisor, user)
 │       │   └── page.tsx
 │       ├── (admin)/            # Rotas exclusivas para admin
-│       │   ├── companies/
+│       │   ├── companies/      # Rota companies
 │       │   │   ├── new/
 │       │   │   │   └── page.tsx
 │       │   │   └── page.tsx
-│       │   ├── employees/
+│       │   ├── premises/       # Rota premises
+│       │   │   ├── edit/
+│       │   │   │   └── [id]/
+│       │   │   │       └── page.tsx
+│       │   │   ├── new/
+│       │   │   │    └── page.tsx
 │       │   │   └── page.tsx
-│       │   ├── reports/
+│       │   ├── employees/      # Rota employees
+│       │   │   └── page.tsx
+│       │   ├── reports/        # Rota para relatorios
 │       │   │   └── page.tsx
 │       │   ├── settings/       # Configurações globais (e.g., permissões)
 │       │   │   └── page.tsx
@@ -74,7 +80,8 @@ src/
 │       │   │   └── page.tsx
 │       │   └── layout.tsx
 │       ├── layout.tsx          # Layout padrão compartilhado entre todas as rotas autenticadas
-│       └── metadata.ts         # Metadados globais
+│       ├── metadata.ts         # Metadados globais
+│       └── page.tsx            # Landing page (rota raiz) pública.
 ├── components/
 │   ├── ui/                     # Componentes de interface reutilizáveis
 │   │   ├── avatar.tsx
