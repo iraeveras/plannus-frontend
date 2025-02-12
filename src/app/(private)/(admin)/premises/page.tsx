@@ -52,6 +52,7 @@ export default function PremisesList() {
         try {
             await api.delete(`/premises/${id}`);
             setPremises(premises.filter((premise: any) => premise.id !== id));
+            
             toast({
                 title: "Sucesso!",
                 description: "Premissa excluida com sucesso!",
