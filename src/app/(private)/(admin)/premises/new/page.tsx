@@ -1,4 +1,4 @@
-// File: src/app/premises/new/page.tsx
+// File: src/app/(private)/(admin)/premises/new/page.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -73,7 +73,7 @@ export default function NewPremise() {
             />
 
             {error && <p className="text-red-600 mb-4">{error}</p>}
-            <div className="p-6">
+            <div className="p-6" >
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
                         <InputForm
