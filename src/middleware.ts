@@ -15,6 +15,7 @@ export const config = {
     "/employees/:path*",
     "/reports/:path*",
     "/settings/:path*",
+    "/users/:path*",
     "/login",
   ], // Aplica o middleware apenas nessas rotas
 };
