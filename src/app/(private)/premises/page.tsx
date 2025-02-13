@@ -8,7 +8,7 @@ import { metadata } from "@/app/metadata";
 import HeaderPage from "@/components/private/header-page";
 import { FilePenLine, Trash2 } from "lucide-react";
 import DataTable from "@/components/data-display/data-table";
-import { toast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 type Premise = {
     id: string;
@@ -21,6 +21,7 @@ export default function PremisesList() {
     const [premises, setPremises] = useState<Premise[]>([]);
     const [error, setError] = useState("");
     const router = useRouter();
+    const { toast } = useToast();
 
     useEffect(() => {
         document.title = metadata.listPremises.title;
