@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/private/app-sidebar";
 import { Toaster } from "@/components/ui/toaster";
+import { cn } from "@/lib/utils";
 
 export function ClientLayout({ children, defaultOpen }: { children: React.ReactNode; defaultOpen: boolean }) {
     const pathname = usePathname();
@@ -15,7 +16,9 @@ export function ClientLayout({ children, defaultOpen }: { children: React.ReactN
         <SidebarProvider defaultOpen={defaultOpen}>
         {!isPublicPage && <AppSidebar />}
         <SidebarInset>
-            <main className="min-h-screen">
+            <main className={cn(
+                "min-h-svh bg-background font-sans antialiased"
+                )}>
                 <Toaster />
                 {children}
             </main>
