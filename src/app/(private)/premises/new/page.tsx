@@ -78,7 +78,7 @@ export default function NewPremise() {
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
                         <InputForm
                             label="Premissa"
-                            placeholder="DIgite o nome da premissa"
+                            placeholder="Digite o nome da premissa"
                             type="text"
                             name="name"
                             control={form.control}
@@ -86,7 +86,7 @@ export default function NewPremise() {
 
                         <InputForm
                             label="Categoria"
-                            placeholder="DIgite a categoria da premissa"
+                            placeholder="Digite a categoria da premissa"
                             type="text"
                             name="category"
                             control={form.control}
@@ -105,10 +105,10 @@ export default function NewPremise() {
 
                         />
                         <div className="flex items-center space-x-4">
-                            <Button variant="outline" type="submit" disabled={!form.formState.isValid}>
+                            <Button type="submit" disabled={!form.formState.isValid}>
                                 {isSubmitting ? "Salvando cadastro..." : "Cadastrar"}
                             </Button>
-                            <Button asChild>
+                            <Button variant="destructive" asChild>
                                 <Link href={"/"}>
                                     Cancelar
                                 </Link>
