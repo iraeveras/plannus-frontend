@@ -8,10 +8,12 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import api from "@/lib/api"; // instância do Axios com interceptor configurado
 import InputForm from "@/components/forms/input-form";
+import SelectForm from "@/components/forms/select-form";
 import HeaderPage from "@/components/private/header-page";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Form } from "@/components/ui/form";
+import { useState } from "react";
 
 // Schema de validação para o cadastro de usuário
 const userSchema = z.object({
@@ -28,8 +30,24 @@ const userSchema = z.object({
 
 type UserFormValues = z.infer<typeof userSchema>;
 
+// Opções para os campos customizados
+const statusOptions = [
+    { label: "Ativo", value: "active" },
+    { label: "Inativo", value: "inactive" },
+];
+
+const roleOptions = [
+    { label: "Admin", value: "admin" },
+    { label: "Gerente Administrativo Financeiro", value: "managerGeafi" },
+    { label: "Gerente de Operações", value: "managerGerop" },
+    { label: "Gerente de Marketing", value: "managerGemkt" },
+    { label: "Supervisor", value: "supervisor" },
+    { label: "Usuário", value: "user" },
+];
+
 export default function NewUser() {
     const router = useRouter();
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const { toast } = useToast();
 
     const form = useForm<UserFormValues>({
@@ -46,15 +64,18 @@ export default function NewUser() {
     });
 
     const onSubmit = async (values: UserFormValues) => {
+        setIsSubmitting(true);
+
         try {
             // Chamada para o endpoint de criação de usuário
             await api.post("/users", values);
+            
             toast({
                 title: "Sucesso!",
                 description: "Usuário cadastrado com sucesso!",
                 variant: "success",
             });
-            router.push("/admin/users"); // redireciona para a listagem de usuários
+            router.push("/users"); // redireciona para a listagem de usuários
         } catch (error: any) {
             console.error("Erro ao cadastrar usuário:", error.response?.data || error.message);
             toast({
@@ -62,6 +83,8 @@ export default function NewUser() {
                 description: "Ocorreu um erro ao cadastrar o usuário.",
                 variant: "destructive",
             });
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -103,40 +126,32 @@ export default function NewUser() {
                             control={form.control}
                         />
 
-                        {/* Campo Status */}
-                        <div className="flex flex-col">
-                            <label className="mb-1">Status</label>
-                            <select {...form.register("status")} className="border rounded p-2">
-                                <option value="active">Ativo</option>
-                                <option value="inactive">Inativo</option>
-                            </select>
-                            {form.formState.errors.status && (
-                                <span className="text-red-600 text-sm">{form.formState.errors.status.message}</span>
-                            )}
-                        </div>
+                        {/* Campo Status com o componente SelectForm */}
+                        <SelectForm
+                            label="Status"
+                            placeholder="Selecione o status"
+                            name="status"
+                            control={form.control}
+                            options={statusOptions}
+                            description="Selecione se o usuário estará ativo ou inativo."
+                        />
 
-                        {/* Campo Papel (Role) */}
-                        <div className="flex flex-col">
-                            <label className="mb-1">Papel</label>
-                            <select {...form.register("role")} className="border rounded p-2">
-                                <option value="admin">Admin</option>
-                                <option value="managerGeafi">Gerente Administrativo Financeiro</option>
-                                <option value="managerGerop">Gerente de Operações</option>
-                                <option value="managerGemkt">Gerente de Marketing</option>
-                                <option value="supervisor">Supervisor</option>
-                                <option value="user">Usuário</option>
-                            </select>
-                            {form.formState.errors.role && (
-                                <span className="text-red-600 text-sm">{form.formState.errors.role.message}</span>
-                            )}
-                        </div>
+                        {/* Campo Papel (Role) com o componente SelectForm */}
+                        <SelectForm
+                            label="Papel"
+                            placeholder="Selecione o papel"
+                            name="role"
+                            control={form.control}
+                            options={roleOptions}
+                            description="Selecione o papel do usuário (apenas admin pode cadastrar)."
+                        />
 
                         <div className="flex items-center space-x-4">
                             <Button type="submit" disabled={!form.formState.isValid}>
-                                Cadastrar
+                                {isSubmitting ? "Salvando cadastro..." : "Cadastrar"}
                             </Button>
-                            <Button asChild variant="outline">
-                                <Link href="/admin/users">Cancelar</Link>
+                            <Button asChild variant="secondary">
+                                <Link href="/users">Cancelar</Link>
                             </Button>
                         </div>
                     </form>
