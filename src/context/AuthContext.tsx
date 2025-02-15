@@ -1,5 +1,4 @@
 // File: src/context/AuthContext.tsx
-
 "use client"
 
 import { createContext, useState, useEffect, useContext, ReactNode } from "react"
@@ -20,7 +19,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null)
     const router = useRouter()
 
-    // ✅ Recupera o usuário do localStorage ao iniciar
+    // Recupera o usuário do localStorage ao iniciar
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (token) {
@@ -41,8 +40,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             });
 
             if (!res.ok) {
-                // Captura o status e a mensagem de erro da API
-                const errorData = await res.json().catch(() => ({})); // Tenta extrair o corpo da resposta
+                // Tenta extrair o corpo da resposta para obter a mensagem de erro
+                const errorData = await res.json().catch(() => ({}));
                 throw new Error(
                     `Erro na requisição: ${res.status} ${res.statusText}. ${errorData.message || ""}`
                 );
@@ -50,8 +49,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
             const data = await res.json();
             setUser(data.user);
-        } catch (error) {
-            console.error("Erro ao buscar dados do usuário:", error);
+        } catch (error: any) {
+            // Se o erro indicar 401 (Unauthorized), trata de forma mais silenciosa
+            if (error.message.includes("401")) {
+                console.warn("Token inválido ou não autorizado. Redirecionando para login.");
+            } else {
+                console.error("Erro ao buscar dados do usuário:", error);
+            }
             logout();
         }
     }
@@ -74,7 +78,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 export function useAuth() {
     const context = useContext(AuthContext)
     if (!context) {
-        throw new Error("useAuth deve ser usado dentro de um AuthProvider")
+        throw new Error("useAuth deve ser usado dentro de um AuthProvider");
     }
     return context
 }
