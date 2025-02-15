@@ -18,6 +18,10 @@ const buttonVariants = cva(
           "bg-slate-100 text-slate-900 hover:bg-slate-100/80 dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80",
         ghost: "hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50",
         link: "text-slate-900 underline-offset-4 hover:underline dark:text-slate-50",
+        gray: "bg-slate-100 text-slate-900 dark:bg-transparet dark:text-slate-50 dark:border",
+        border: "border border-neutral-300 hover:border-neutral-600/90 bg-transparent text-zinc-900 dark:text-neutral-50 dark:border-neutral-500 dark:hover:border-neutral-400",
+        zinc: "bg-zinc-400 text-zinc-50 hover:bg-zinc-600/90 dark:bg-zinc-300 dark:text-zinc-950 dark:hover:bg-zinc-50",
+        transparent: "bg-transparent text-slate-900 dark:bg-transparet dark:text-slate-50 dark:border",
       },
       size: {
         default: "h-10 px-4 py-2",

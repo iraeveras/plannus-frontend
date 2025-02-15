@@ -26,7 +26,7 @@ export function ModeToggle() {
     return (
         <Button
             className="border-none outline-none bg-transparent"
-            variant="outline"
+            variant="gray"
             size="icon"
             onClick={() =>
                 setTheme(currentTheme === "dark" ? "light" : "dark")

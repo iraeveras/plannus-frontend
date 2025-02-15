@@ -171,14 +171,16 @@ const DataTable = <T extends Record<string, any>>({
                 </div>
                 <div className="flex space-x-2">
                     <Button
-                        variant="outline"
+                        className="font-semibold"
+                        variant="border"
                         disabled={currentPage === 1}
                         onClick={() => setCurrentPage((prev) => prev - 1)}
                     >
                         Anterior
                     </Button>
                     <Button
-                        variant="outline"
+                        className="font-semibold"
+                        variant="border"
                         disabled={currentPage === totalPages}
                         onClick={() => setCurrentPage((prev) => prev + 1)}
                     >

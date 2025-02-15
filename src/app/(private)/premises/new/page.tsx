@@ -105,10 +105,10 @@ export default function NewPremise() {
 
                         />
                         <div className="flex items-center space-x-4">
-                            <Button type="submit" disabled={!form.formState.isValid}>
+                            <Button variant="zinc" type="submit" disabled={!form.formState.isValid}>
                                 {isSubmitting ? "Salvando cadastro..." : "Cadastrar"}
                             </Button>
-                            <Button variant="destructive" asChild>
+                            <Button variant="border" asChild>
                                 <Link href={"/"}>
                                     Cancelar
                                 </Link>

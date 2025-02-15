@@ -55,7 +55,7 @@ export function Topbar() {
                 <div className="flex items-center gap-4">
                     <Button
                         className="border-none outline-none bg-transparent font-semibold"
-                        variant="outline"
+                        variant="transparent"
                         onClick={() => router.push("/login")}
                     >
                         Login

@@ -105,14 +105,14 @@ export default function NewUser() {
                             control={form.control}
                         />
                         <InputForm
-                            label="Username"
+                            label="Nome de usuário"
                             placeholder="Digite o username"
                             type="text"
                             name="username"
                             control={form.control}
                         />
                         <InputForm
-                            label="Email"
+                            label="E-mail"
                             placeholder="Digite o email"
                             type="email"
                             name="email"
@@ -147,10 +147,10 @@ export default function NewUser() {
                         />
 
                         <div className="flex items-center space-x-4">
-                            <Button type="submit" disabled={!form.formState.isValid}>
+                            <Button variant="zinc" type="submit" disabled={!form.formState.isValid}>
                                 {isSubmitting ? "Salvando cadastro..." : "Cadastrar"}
                             </Button>
-                            <Button asChild variant="secondary">
+                            <Button asChild variant="border">
                                 <Link href="/users">Cancelar</Link>
                             </Button>
                         </div>
