@@ -22,16 +22,6 @@ import {
 import NewUser from "./user-config-create";
 import EditUserForm from "./user-config-edit";
 
-// interface User {
-//     id: string;
-//     name: string;
-//     username: string;
-//     email: string;
-//     role: string;
-//     status: string;
-//     avatarURL?: string;
-// }
-
 export default function UserConfigContent() {
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -53,9 +43,9 @@ export default function UserConfigContent() {
                 setUsers(response.data);
             } catch (error: any) {
                 toast({
-                title: "Erro",
-                description: "Erro ao buscar usuários.",
-                variant: "destructive",
+                    title: "Erro",
+                    description: "Erro ao buscar usuários.",
+                    variant: "destructive",
                 });
             } finally {
                 setLoading(false);
@@ -105,33 +95,33 @@ export default function UserConfigContent() {
     };
 
     return (
-        
+
         <div>
             <div className="flex items-center justify-between mb-4">
                 <h2 className="text-sm text-neutral-500 font-medium">Usuários Cadastrados</h2>
                 <Dialog>
                     <DialogTrigger asChild>
                         <Button className="bg-teal-600 hover:bg-teal-500 dark:bg-teal-600 dark:hover:bg-teal-500 dark:text-neutral-100">
-                            <UserRoundPlus/> Novo Usuário
+                            <UserRoundPlus /> Novo Usuário
                         </Button>
                     </DialogTrigger>
-                    <DialogContent 
+                    <DialogContent
                         className="sm:max-w-2xl"
                         onPointerDownOutside={(event) => event.preventDefault()}
                     >
                         <DialogHeader>
-                            <DialogTitle 
+                            <DialogTitle
                                 className="flex items-center gap-2 text-teal-400 font-normal text-sm tracking-widest"
                             >
-                                <UserRoundPlus className="text-teal-600"/> 
+                                <UserRoundPlus className="text-teal-600" />
                                 Cadastrar Novo Usuário
                             </DialogTitle>
-                            
+
                         </DialogHeader>
                         {/* Aqui você pode incluir o formulário de cadastro de usuário */}
                         <div className="mt-4">
                             {/* Exemplo: você pode reutilizar o formulário de cadastro que já criou */}
-                            <NewUser/>
+                            <NewUser />
                         </div>
                     </DialogContent>
                 </Dialog>
@@ -147,8 +137,8 @@ export default function UserConfigContent() {
                     columns={[...columns]}
                     actions={(row) => (
                         <>
-                            <FilePenLine className="cursor-pointer text-teal-400 hover:text-teal-500" onClick={() => handleEdit(row)}/>
-                            <Trash2 className="cursor-pointer text-red-400 hover:text-red-500" onClick={() => handleDelete(row.id)}/>
+                            <FilePenLine className="cursor-pointer text-teal-400 hover:text-teal-500" onClick={() => handleEdit(row)} />
+                            <Trash2 className="cursor-pointer text-red-400 hover:text-red-500" onClick={() => handleDelete(row.id)} />
                         </>
                     )}
                 />
@@ -164,7 +154,7 @@ export default function UserConfigContent() {
                     <DialogContent className="sm:max-w-2xl" onPointerDownOutside={(event) => event.preventDefault()}>
                         <DialogHeader>
                             <DialogTitle className="flex items-center gap-2 text-teal-400 font-normal text-sm tracking-widest">
-                                <FilePenLine className="text-teal-600" /> 
+                                <FilePenLine className="text-teal-600" />
                                 Editar Usuário
                             </DialogTitle>
                             <DialogDescription>
