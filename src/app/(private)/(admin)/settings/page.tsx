@@ -5,7 +5,7 @@ import React from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { TabItem } from "@/components/forms/tabs/tab-item";
 import HeaderPage from "@/components/private/header-page";
-import UserConfigurationsTabs from "./user-configurations-tabs";
+import UserConfigurationsTabs from "./user/user-configurations-tabs";
 
 export default function SettingsPage() {
     return (
