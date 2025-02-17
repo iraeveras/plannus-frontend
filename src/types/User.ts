@@ -5,7 +5,9 @@ export type UserRole = "admin" | "managerGeafi" | "managerGerop" | "managerGemkt
 export interface User {
     id: string;
     name: string;
+    username: string;        // Adicionado
     email: string;
+    status: "active" | "inactive";  // Adicionado
     role: UserRole;
-    avatar?: string;
+    avatarURL?: string;      // Adicionado, opcional
 }
