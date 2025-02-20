@@ -7,6 +7,7 @@ import { TabItem } from "@/components/forms/tabs/tab-item";
 import HeaderPage from "@/components/private/header-page";
 import UserConfigurationsTabs from "./user/user-configurations-tabs";
 import PermissionTypes from "./permissions/permission-types";
+import RoleForm from "./role/role-form";
 
 export default function SettingsPage() {
     return (
@@ -20,12 +21,16 @@ export default function SettingsPage() {
                 <Tabs defaultValue="users">
                     <TabsList className="flex text-neutral-400 scroll-smooth">
                         <TabItem label="Tipos de permissões" value="permissionType" />
+                        <TabItem label="Tipos de níveis" value="levelType" />
                         <TabItem label="Usuários" value="users" />
                         <TabItem label="Notificações" value="notifications" />
                         <TabItem label="Outras" value="others" />
                     </TabsList>
                     <TabsContent value="permissionType" className="p-3 transition-opacity duration-300 ease-in-out">
                         <PermissionTypes />
+                    </TabsContent>
+                    <TabsContent value="levelType" className="p-3 transition-opacity duration-300 ease-in-out">
+                        <RoleForm />
                     </TabsContent>
                     <TabsContent value="users" className="py-3 transition-opacity duration-300 ease-in-out">
                         <UserConfigurationsTabs />
