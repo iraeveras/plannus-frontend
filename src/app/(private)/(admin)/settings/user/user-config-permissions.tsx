@@ -1,4 +1,4 @@
-// File: src/app/(private)/(admin)/settings/permissions/page.tsx
+// File: src/app/(private)/(admin)/settings/user/user-config-permissions.tsx
 "use client";
 
 import React, { useEffect, useState } from "react";

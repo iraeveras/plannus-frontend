@@ -1,4 +1,4 @@
-// File: src/app/(private)/(admin)/settings/user-config-content.tsx
+// File: src/app/(private)/(admin)/settings/user/user-config-content.tsx
 "use client";
 
 import { useState, useEffect } from "react";

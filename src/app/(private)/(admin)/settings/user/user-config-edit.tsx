@@ -1,4 +1,4 @@
-// File: src/app/(private)/(admin)/settings/user-config-edit.tsx
+// File: src/app/(private)/(admin)/settings/user/user-config-edit.tsx
 "use client";
 
 import { useForm } from "react-hook-form";

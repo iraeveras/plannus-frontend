@@ -1,4 +1,4 @@
-// File: src/app/(private)/(admin)/settings/user-configurations-tabs.tsx
+// File: src/app/(private)/(admin)/settings/user/user-configurations-tabs.tsx
 "use client";
 
 import React from "react";
