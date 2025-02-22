@@ -1,4 +1,4 @@
-// File: src/components/input-form.tsx
+// File: src/components/forms/input-form.tsx
 import {
     FormControl,
     FormDescription,
@@ -6,7 +6,7 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "@/components/ui/form";
+} from "@/components/forms/custom-ui-form";
 import { Input } from "@/components/ui/input";
 
 interface InputFormProps {
