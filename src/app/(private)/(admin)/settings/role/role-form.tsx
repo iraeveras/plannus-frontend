@@ -51,7 +51,7 @@ export default function RoleForm() {
     useEffect(() => {
         async function fetchPermissions() {
             try {
-                const response = await api.get("/permissions");
+                const response = await api.get("/users/permissions");
                 setPermissions(response.data || []);
             } catch (error: any) {
                 toast({
@@ -104,20 +104,22 @@ export default function RoleForm() {
             <h2 className="text-2xl font-bold mb-4">Criar Novo Role</h2>
             <CustomForm form={{ control, handleSubmit, reset } as any}>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                    <InputForm
-                        label="Nome do Role"
-                        placeholder="Ex: admin"
-                        type="text"
-                        name="name"
-                        control={control}
-                    />
-                    <InputForm
-                        label="Descrição"
-                        placeholder="Descrição do role"
-                        type="text"
-                        name="description"
-                        control={control}
-                    />
+                    <div className="grid grid-cols-2 gap-2">
+                        <InputForm
+                            label="Nome do Role"
+                            placeholder="Ex: admin"
+                            type="text"
+                            name="name"
+                            control={control}
+                        />
+                        <InputForm
+                            label="Descrição"
+                            placeholder="Descrição do role"
+                            type="text"
+                            name="description"
+                            control={control}
+                        />
+                    </div>
                     <div>
                         <h3 className="text-lg font-medium mb-2">Definir Permissões</h3>
                         {permissions.length === 0 ? (
@@ -125,11 +127,12 @@ export default function RoleForm() {
                         ) : (
                             permissions.map((perm) => (
                                 <div key={perm.id} className="border p-2 rounded mb-2">
-                                    <h4 className="font-semibold">{perm.name}</h4>
+                                    {/* <h4 className="font-semibold">{}</h4> */}
+                                    <div className="grid grid-cols-2 gap-2">
                                     {perm.description && (
-                                        <p className="text-sm text-gray-600">{perm.description}</p>
+                                        <p className="text-sm text-gray-600">{perm.name}</p>
                                     )}
-                                    <div className="grid grid-cols-5 gap-2 mt-2">
+                                    <div className="grid lg:grid-cols-10 md:grid-cols-5 gap-2 mt-2">
                                         {["view", "create", "edit", "delete", "selectAll"].map((action) => (
                                             <div key={action} className="flex items-center space-x-1">
                                                 <Controller
@@ -148,6 +151,7 @@ export default function RoleForm() {
                                                 />
                                             </div>
                                         ))}
+                                    </div>
                                     </div>
                                 </div>
                             ))

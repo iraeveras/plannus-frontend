@@ -49,7 +49,7 @@ export default function PermissionTypes() {
     useEffect(() => {
         async function fetchPermissions() {
             try {
-                const response = await api.get("/users/permissions");
+                const response = await api.get("/permissions");
                 setPermissions(response.data || []);
             } catch (error: any) {
                 if (error.response?.status === 404) {
