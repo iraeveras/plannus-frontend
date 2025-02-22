@@ -20,20 +20,20 @@ export default function SettingsPage() {
                 <h1 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-4">⚙️ Configurações</h1>
                 <Tabs defaultValue="users">
                     <TabsList className="flex text-neutral-400 scroll-smooth">
+                        <TabItem label="Usuários" value="users" />
                         <TabItem label="Tipos de permissões" value="permissionType" />
                         <TabItem label="Tipos de níveis" value="levelType" />
-                        <TabItem label="Usuários" value="users" />
                         <TabItem label="Notificações" value="notifications" />
                         <TabItem label="Outras" value="others" />
                     </TabsList>
+                    <TabsContent value="users" className="py-3 transition-opacity duration-300 ease-in-out">
+                        <UserConfigurationsTabs />
+                    </TabsContent>
                     <TabsContent value="permissionType" className="p-3 transition-opacity duration-300 ease-in-out">
                         <PermissionTypes />
                     </TabsContent>
                     <TabsContent value="levelType" className="p-3 transition-opacity duration-300 ease-in-out">
                         <RoleForm />
-                    </TabsContent>
-                    <TabsContent value="users" className="py-3 transition-opacity duration-300 ease-in-out">
-                        <UserConfigurationsTabs />
                     </TabsContent>
                     <TabsContent value="notifications" className="p-3 transition-opacity duration-300 ease-in-out">
                         <p>Configurações de notificações...</p>
