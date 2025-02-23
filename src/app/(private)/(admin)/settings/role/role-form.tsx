@@ -35,6 +35,15 @@ interface Permission {
     description?: string;
 }
 
+// Definindo as ações com chave interna e label para exibição
+const permissionActions = [
+    { key: "view", label: "Visualizar" },
+    { key: "create", label: "Criar" },
+    { key: "edit", label: "Editar" },
+    { key: "delete", label: "Deletar" },
+    { key: "selectAll", label: "Selecionar Todos" },
+];
+
 export default function RoleForm() {
     const { toast } = useToast();
     const [permissions, setPermissions] = useState<Permission[]>([]);
@@ -84,6 +93,7 @@ export default function RoleForm() {
 
         try {
             const response = await api.post("/roles", payload);
+            
             toast({
                 title: "Sucesso",
                 description: "Role criado com sucesso!",
@@ -127,31 +137,32 @@ export default function RoleForm() {
                         ) : (
                             permissions.map((perm) => (
                                 <div key={perm.id} className="border p-2 rounded mb-2">
-                                    {/* <h4 className="font-semibold">{}</h4> */}
+                                    <h4 className="font-semibold">{perm.name}</h4>
                                     <div className="grid grid-cols-2 gap-2">
-                                    {perm.description && (
-                                        <p className="text-sm text-gray-600">{perm.name}</p>
-                                    )}
-                                    <div className="grid lg:grid-cols-10 md:grid-cols-5 gap-2 mt-2">
-                                        {["view", "create", "edit", "delete", "selectAll"].map((action) => (
-                                            <div key={action} className="flex items-center space-x-1">
-                                                <Controller
-                                                    control={control}
-                                                    name={`permissions.${perm.id}.${action}` as any}
-                                                    defaultValue={false}
-                                                    render={({ field: { value, onChange } }) => (
-                                                        <>
-                                                            <Checkbox
-                                                                checked={value}
-                                                                onCheckedChange={(checkedValue) => onChange(checkedValue)}
-                                                            />
-                                                            <span className="text-xs">{action}</span>
-                                                        </>
-                                                    )}
-                                                />
-                                            </div>
-                                        ))}
-                                    </div>
+                                        {perm.description && (
+                                            <p className="text-sm text-gray-600">{perm.description}</p>
+                                        )}
+                                        
+                                        <div className="flex col-span-2 md:col-span-1 flex-col lg:flex-row gap-2">
+                                            {permissionActions.map((action) => (
+                                                <div key={action.key} className="flex items-center space-x-1">
+                                                    <Controller
+                                                        control={control}
+                                                        name={`permissions.${perm.id}.${action.key}` as any}
+                                                        defaultValue={false}
+                                                        render={({ field: { value, onChange } }) => (
+                                                            <>
+                                                                <Checkbox
+                                                                    checked={value}
+                                                                    onCheckedChange={(checkedValue) => onChange(checkedValue)}
+                                                                />
+                                                                <span className="text-xs">{action.label}</span>
+                                                            </>
+                                                        )}
+                                                    />
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
                             ))
