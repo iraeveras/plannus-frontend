@@ -4,6 +4,7 @@
 import React from "react";
 import DataTable from "@/components/data-display/data-table"; // Supondo que você já tenha esse componente genérico
 import { Button } from "@/components/ui/button";
+import { FilePenLine, Trash2 } from "lucide-react";
 
 export interface Role {
     id: string;
@@ -36,16 +37,12 @@ export interface Role {
         columns={columns}
         actions={(role) => (
             <div className="flex space-x-2">
-            {onEdit && (
-                <Button variant="outline" size="sm" onClick={() => onEdit(role)}>
-                Editar
-                </Button>
-            )}
-            {onDelete && (
-                <Button variant="destructive" size="sm" onClick={() => onDelete(role)}>
-                Excluir
-                </Button>
-            )}
+                {onEdit && (
+                    <FilePenLine className="cursor-pointer text-teal-400 hover:text-teal-500" onClick={() => onEdit(role)}/>
+                )}
+                {onDelete && (
+                    <Trash2 className="cursor-pointer text-red-400 hover:text-red-500" onClick={() => onDelete(role)}/>
+                )}
             </div>
         )}
         />
