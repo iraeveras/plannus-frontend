@@ -49,7 +49,7 @@ export default function PermissionTypes() {
     useEffect(() => {
         async function fetchPermissions() {
             try {
-                const response = await api.get("/permissions");
+                const response = await api.get("/users/permissions");
                 setPermissions(response.data || []);
             } catch (error: any) {
                 if (error.response?.status === 404) {
@@ -132,8 +132,8 @@ export default function PermissionTypes() {
                     <p className="text-gray-500">Nenhuma permissão cadastrada.</p>
                 ) : (
                     <ul className="space-y-2">
-                        {permissions.map((perm) => (
-                            <li key={perm.id} className="p-2 border rounded flex justify-between items-center">
+                        {permissions.map((perm, index) => (
+                            <li key={`${perm.id}-${index}`} className="p-2 border rounded flex justify-between items-center">
                                 <div>
                                     <p className="font-medium">{perm.name}</p>
                                     {perm.description && <p className="text-sm text-gray-600">{perm.description}</p>}
