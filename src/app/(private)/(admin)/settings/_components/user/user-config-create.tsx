@@ -108,17 +108,20 @@ export default function NewUser() {
         <>
             
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                        
-                        {/* Campo opcional para Avatar URL */}
-                        <AvatarUpload onFileSelect={setAvatarFile} />
-                        <InputForm
-                            label="Nome"
-                            placeholder="Digite o nome do usuário"
-                            type="text"
-                            name="name"
-                            control={form.control}
-                        />
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 flex flex-col">
+                        <div className="flex items-center p-1 gap-3 w-full">
+                            {/* Campo opcional para Avatar URL */}
+                            <AvatarUpload onFileSelect={setAvatarFile} />
+                            <div className="w-full">
+                                <InputForm
+                                    label="Nome"
+                                    placeholder="Digite o nome do usuário"
+                                    type="text"
+                                    name="name"
+                                    control={form.control}
+                                />
+                            </div>
+                        </div>
                         <InputForm
                             label="Nome de usuário"
                             placeholder="Digite o username"
@@ -126,6 +129,7 @@ export default function NewUser() {
                             name="username"
                             control={form.control}
                         />
+                        
                         <InputForm
                             label="E-mail"
                             placeholder="Digite o email"
@@ -140,27 +144,28 @@ export default function NewUser() {
                             name="password"
                             control={form.control}
                         />
+                        <div className="flex justify-between">
+                            {/* Campo Status com o componente SelectForm */}
+                            <SelectForm
+                                label="Status"
+                                placeholder="Selecione o status"
+                                name="status"
+                                control={form.control}
+                                options={statusOptions}
+                                description="Selecione se o usuário estará ativo ou inativo."
+                            />
 
-                        {/* Campo Status com o componente SelectForm */}
-                        <SelectForm
-                            label="Status"
-                            placeholder="Selecione o status"
-                            name="status"
-                            control={form.control}
-                            options={statusOptions}
-                            description="Selecione se o usuário estará ativo ou inativo."
-                        />
-
-                        {/* Campo Papel (Role) com o componente SelectForm */}
-                        <SelectForm
-                            label="Papel"
-                            placeholder="Selecione o papel"
-                            name="role"
-                            control={form.control}
-                            options={roleOptions}
-                            description="Selecione o papel do usuário (apenas admin pode cadastrar)."
-                        />
-
+                            
+                            {/* Campo Papel (Role) com o componente SelectForm */}
+                            <SelectForm
+                                label="Papel"
+                                placeholder="Selecione o papel"
+                                name="role"
+                                control={form.control}
+                                options={roleOptions}
+                                description="Selecione o papel do usuário (apenas admin pode cadastrar)."
+                            />
+                        </div>
                         <div className="flex items-center justify-end space-x-4">
                             <Button variant="zinc" type="submit" disabled={!form.formState.isValid}>
                                 {isSubmitting ? "Salvando cadastro..." : "Cadastrar"}

@@ -27,20 +27,20 @@ const handleClick = () => {
 };
 
     return (
-        <div className="flex flex-col items-end h-24 mb-3 p-1">
+        <div className="relative flex flex-col items-end w-14 h-16 border rounded-md">
             {/* <label className="mb-1 font-medium text-center">Foto</label> */}
             <div
                 onClick={handleClick}
-                className=" rounded cursor-pointer flex items-center w-full h-full justify-end"
+                className=" rounded cursor-pointer flex items-center justify-center w-full h-full"
             >
                 {preview ? (
                 <img
                     src={preview}
                     alt="Preview"
-                    className="h-20 w-20 object-cover rounded-md"
+                    className="absolute h-full w-full object-cover rounded-md"
                 />
                 ) : (
-                <span className="text-gray-500 text-xs text-center">Clique para selecionar uma imagem</span>
+                <span className="text-gray-500 text-[10px] text-center">selecionar imagem</span>
                 )}
             </div>
             <input

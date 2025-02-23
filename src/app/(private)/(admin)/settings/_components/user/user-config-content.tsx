@@ -97,7 +97,7 @@ export default function UserConfigContent() {
     return (
 
         <div>
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-3">
                 <h2 className="text-sm text-neutral-500 font-medium">Usuários Cadastrados</h2>
                 <Dialog>
                     <DialogTrigger asChild>
@@ -119,7 +119,7 @@ export default function UserConfigContent() {
 
                         </DialogHeader>
                         {/* Aqui você pode incluir o formulário de cadastro de usuário */}
-                        <div className="mt-4">
+                        <div className="mt-2 overflow-y-auto">
                             {/* Exemplo: você pode reutilizar o formulário de cadastro que já criou */}
                             <NewUser />
                         </div>
