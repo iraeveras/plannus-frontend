@@ -5,10 +5,10 @@ import React from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { TabItem } from "@/components/forms/tabs/tab-item";
 import HeaderPage from "@/components/private/header-page";
-import UserConfigurationsTabs from "./user/user-configurations-tabs";
-import PermissionTypes from "./permissions/permission-types";
-import RoleForm from "./role/role-form";
-import RoleConfigurationsTabs from "./role/role-config-tabs";
+import UserConfigurationsTabs from "./_components/user/user-configurations-tabs";
+import PermissionTypes from "./_components/permissions/permission-types";
+import RoleForm from "./_components/role/role-form";
+import RoleConfigurationsTabs from "./_components/role/role-config-tabs";
 
 export default function SettingsPage() {
     return (
