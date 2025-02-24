@@ -106,15 +106,15 @@ export default function RoleList() {
                                 Faça as alterações necessárias.
                             </DialogDescription>
                         </DialogHeader>
-                        <div className="mt-4">
-                        <EditRoleForm
-                            initialData={selectedRole}
-                            onClose={() => setIsEditDialogOpen(false)}
-                            onRoleUpdated={(updatedRole) => {
-                            updateRoleInList(updatedRole);
-                            setIsEditDialogOpen(false);
-                            }}
-                        />
+                        <div className="mt-1">
+                            <EditRoleForm
+                                initialData={selectedRole}
+                                onClose={() => setIsEditDialogOpen(false)}
+                                onRoleUpdated={(updatedRole) => {
+                                updateRoleInList(updatedRole);
+                                setIsEditDialogOpen(false);
+                                }}
+                            />
                         </div>
                         {/* <DialogFooter>
                             <DialogClose asChild>
