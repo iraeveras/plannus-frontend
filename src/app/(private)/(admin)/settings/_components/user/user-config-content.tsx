@@ -161,7 +161,7 @@ export default function UserConfigContent() {
                                 Faça as alterações necessárias.
                             </DialogDescription>
                         </DialogHeader>
-                        <div className="mt-4">
+                        <div className="mt-4 overflow-y-auto">
                             <EditUserForm
                                 initialData={selectedUser}
                                 onClose={() => setIsEditDialogOpen(false)}
