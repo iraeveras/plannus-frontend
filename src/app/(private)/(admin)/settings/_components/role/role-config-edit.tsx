@@ -1,4 +1,4 @@
-// File: src/app/(private)/(admin)/settings/role/edit-role-form.tsx
+// File: src/app/(private)/(admin)/settings/role/role-config-edit.tsx
 "use client";
 
 import React, { useEffect, useMemo } from "react";
@@ -59,11 +59,12 @@ export default function EditRoleForm({ initialData, onClose, onRoleUpdated }: Ed
     };
 
     // Transforma o array de rolePermissions (se existir) no objeto esperado pelo formulário
-    const transformedPermissions = useMemo<Record<string, PermissionActionsType>>(() => {
+    const transformedPermissions = useMemo<Record<string, {name: string} & PermissionActionsType>>(() => {
         if (initialData.rolePermissions && Array.isArray(initialData.rolePermissions)) {
             return initialData.rolePermissions.reduce((acc, rp) => {
             // rp.permission.id deve existir no objeto rp
             acc[rp.permission.id] = {
+                name: rp.permission.name,
                 view: rp.view,
                 create: rp.create,
                 edit: rp.edit,
@@ -71,7 +72,7 @@ export default function EditRoleForm({ initialData, onClose, onRoleUpdated }: Ed
                 selectAll: rp.selectAll,
             };
             return acc;
-            }, {} as Record<string, PermissionActionsType>);
+            }, {} as Record<string, { name: string } & PermissionActionsType>);
         }
         return {};
     }, [initialData.rolePermissions]);
@@ -111,6 +112,7 @@ export default function EditRoleForm({ initialData, onClose, onRoleUpdated }: Ed
     const payload = {
         name: values.name,
         description: values.description,
+        permissions: preparedPermissions
     };
 
     try {
@@ -132,7 +134,7 @@ export default function EditRoleForm({ initialData, onClose, onRoleUpdated }: Ed
     };
 
     return (
-        <div className="p-4 border rounded">
+        <div className="p-4 rounded">
             <h2 className="text-2xl font-bold mb-4">Editar Role</h2>
             <CustomForm form={{ control, handleSubmit, reset } as any}>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -160,8 +162,8 @@ export default function EditRoleForm({ initialData, onClose, onRoleUpdated }: Ed
                             <p className="text-gray-500">Nenhuma permissão configurada.</p>
                         ) : (
                             Object.entries(transformedPermissions).map(([permId, actions]) => (
-                                <div key={permId} className="border p-2 rounded mb-2">
-                                    <p className="font-semibold">Permissão: {permId}</p>
+                                <div key={permId} className="flex flex-col gap-2 border p-2 rounded mb-2">
+                                    <p className="font-semibold">{actions.name}</p>
                                     <div className="flex flex-wrap gap-2">
                                         {permissionActions.map((action) => (
                                             <div key={action.key} className="flex items-center space-x-1">
