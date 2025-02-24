@@ -108,6 +108,15 @@ export default function EditUserForm({ initialData, onClose, onUserUpdated }: Ed
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                {/* Se desejar permitir alteração do avatar via URL */}
+                <InputForm
+                    label="Avatar URL (opcional)"
+                    placeholder="Digite a URL do avatar"
+                    type="text"
+                    name="avatarURL"
+                    control={form.control}
+                />
+
                 <InputForm
                     label="Nome"
                     placeholder="Digite o nome do usuário"
@@ -129,14 +138,7 @@ export default function EditUserForm({ initialData, onClose, onUserUpdated }: Ed
                     name="email"
                     control={form.control}
                 />
-                {/* Se desejar permitir alteração do avatar via URL */}
-                <InputForm
-                    label="Avatar URL (opcional)"
-                    placeholder="Digite a URL do avatar"
-                    type="text"
-                    name="avatarURL"
-                    control={form.control}
-                />
+
                 {/* Para senha, se for alterar, digitar; caso contrário, deixar vazio */}
                 <InputForm
                     label="Senha (opcional)"

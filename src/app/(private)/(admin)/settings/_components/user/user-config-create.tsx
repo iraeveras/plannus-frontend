@@ -77,13 +77,11 @@ export default function NewUser() {
                 formData.append("file", avatarFile);
                 // Chamada para o endpoint de upload (certifique-se de implementá-lo no backend)
                 const uploadResponse = await api.post("/upload-avatar", formData, {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
+                    headers: { "Content-Type": "multipart/form-data" },
                 });
 
                 console.log("Upload response:", uploadResponse.data);
-                
+
                 if (uploadResponse.data && uploadResponse.data.url) {
                     avatarURL = uploadResponse.data.url; // Ex: /avatars/arquivo.png
                 } else {
@@ -91,8 +89,8 @@ export default function NewUser() {
                 }
             }
             // Chamada para o endpoint de criação de usuário
-            await api.post("/users", {...values, avatarURL});
-            
+            await api.post("/users", { ...values, avatarURL });
+
             toast({
                 title: "Sucesso!",
                 description: "Usuário cadastrado com sucesso!",
@@ -113,77 +111,77 @@ export default function NewUser() {
 
     return (
         <>
-            
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 flex flex-col">
-                        <div className="flex items-center p-1 gap-3 w-full">
-                            {/* Campo opcional para Avatar URL */}
-                            <AvatarUpload onFileSelect={setAvatarFile} />
-                            <div className="w-full">
-                                <InputForm
-                                    label="Nome"
-                                    placeholder="Digite o nome do usuário"
-                                    type="text"
-                                    name="name"
-                                    control={form.control}
-                                />
-                            </div>
-                        </div>
-                        <InputForm
-                            label="Nome de usuário"
-                            placeholder="Digite o username"
-                            type="text"
-                            name="username"
-                            control={form.control}
-                        />
-                        
-                        <InputForm
-                            label="E-mail"
-                            placeholder="Digite o email"
-                            type="email"
-                            name="email"
-                            control={form.control}
-                        />
-                        <InputForm
-                            label="Senha"
-                            placeholder="Digite a senha"
-                            type="password"
-                            name="password"
-                            control={form.control}
-                        />
-                        <div className="flex justify-between">
-                            {/* Campo Status com o componente SelectForm */}
-                            <SelectForm
-                                label="Status"
-                                placeholder="Selecione o status"
-                                name="status"
-                                control={form.control}
-                                options={statusOptions}
-                                description="Selecione se o usuário estará ativo ou inativo."
-                            />
 
-                            
-                            {/* Campo Papel (Role) com o componente SelectForm */}
-                            <SelectForm
-                                label="Papel"
-                                placeholder="Selecione o papel"
-                                name="role"
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 flex flex-col">
+                    <div className="flex items-center p-1 gap-3 w-full">
+                        {/* Campo opcional para Avatar URL */}
+                        <AvatarUpload onFileSelect={setAvatarFile} />
+                        <div className="w-full">
+                            <InputForm
+                                label="Nome"
+                                placeholder="Digite o nome do usuário"
+                                type="text"
+                                name="name"
                                 control={form.control}
-                                options={roleOptions}
-                                description="Selecione o papel do usuário (apenas admin pode cadastrar)."
                             />
                         </div>
-                        <div className="flex items-center justify-end space-x-4">
-                            <Button variant="zinc" type="submit" disabled={!form.formState.isValid}>
-                                {isSubmitting ? "Salvando cadastro..." : "Cadastrar"}
-                            </Button>
-                            {/* <Button asChild variant="border">
+                    </div>
+                    <InputForm
+                        label="Nome de usuário"
+                        placeholder="Digite o username"
+                        type="text"
+                        name="username"
+                        control={form.control}
+                    />
+
+                    <InputForm
+                        label="E-mail"
+                        placeholder="Digite o email"
+                        type="email"
+                        name="email"
+                        control={form.control}
+                    />
+                    <InputForm
+                        label="Senha"
+                        placeholder="Digite a senha"
+                        type="password"
+                        name="password"
+                        control={form.control}
+                    />
+                    <div className="flex justify-between">
+                        {/* Campo Status com o componente SelectForm */}
+                        <SelectForm
+                            label="Status"
+                            placeholder="Selecione o status"
+                            name="status"
+                            control={form.control}
+                            options={statusOptions}
+                            description="Selecione se o usuário estará ativo ou inativo."
+                        />
+
+
+                        {/* Campo Papel (Role) com o componente SelectForm */}
+                        <SelectForm
+                            label="Papel"
+                            placeholder="Selecione o papel"
+                            name="role"
+                            control={form.control}
+                            options={roleOptions}
+                            description="Selecione o papel do usuário (apenas admin pode cadastrar)."
+                        />
+                    </div>
+                    <div className="flex items-center justify-end space-x-4">
+                        <Button variant="zinc" type="submit" disabled={!form.formState.isValid}>
+                            {isSubmitting ? "Salvando cadastro..." : "Cadastrar"}
+                        </Button>
+                        {/* <Button asChild variant="border">
                                 <Link href="/settings">Cancelar</Link>
                             </Button> */}
-                        </div>
-                    </form>
-                </Form>
-            
+                    </div>
+                </form>
+            </Form>
+
         </>
     );
 }

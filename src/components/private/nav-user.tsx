@@ -39,7 +39,7 @@ interface NavUserProps {
     logout: () => void;
 }
 
-  // Função auxiliar para gerar as iniciais do nome
+// Função auxiliar para gerar as iniciais do nome
 function getInitials(name: string): string {
     return name
         .split(" ")
@@ -63,12 +63,12 @@ export function NavUser({ user, logout }: NavUserProps) {
                             className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                         >
                             <Avatar className="h-8 w-8 rounded-lg">
-                                {user.avatar ? (
-                                <AvatarImage src={user.avatar} alt={user.name} />
+                                {user.avatarURL ? (
+                                    <AvatarImage src={user.avatarURL} alt={user.name} />
                                 ) : (
-                                <AvatarFallback className="rounded-lg">
-                                    {getInitials(user.name)}
-                                </AvatarFallback>
+                                    <AvatarFallback className="rounded-lg">
+                                        {getInitials(user.name)}
+                                    </AvatarFallback>
                                 )}
                             </Avatar>
 
@@ -88,8 +88,8 @@ export function NavUser({ user, logout }: NavUserProps) {
                         <DropdownMenuLabel className="p-0 font-normal">
                             <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                                 <Avatar className="h-8 w-8 rounded-lg">
-                                    {user.avatar ? (
-                                        <AvatarImage src={user.avatar} alt={user.name} />
+                                    {user.avatarURL ? (
+                                        <AvatarImage src={user.avatarURL} alt={user.name} />
                                     ) : (
                                         <AvatarFallback className="rounded-lg">
                                             {getInitials(user.name)}

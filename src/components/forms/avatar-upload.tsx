@@ -22,25 +22,25 @@ export default function AvatarUpload({ onFileSelect }: AvatarUploadProps) {
         }
     };
 
-const handleClick = () => {
-    fileInputRef.current?.click();
-};
+    const handleClick = () => {
+        fileInputRef.current?.click();
+    };
 
     return (
-        <div className="relative flex flex-col items-end w-14 h-16 border rounded-md">
+        <div className="relative flex flex-col items-end w-20 h-20 border rounded-md">
             {/* <label className="mb-1 font-medium text-center">Foto</label> */}
             <div
                 onClick={handleClick}
                 className=" rounded cursor-pointer flex items-center justify-center w-full h-full"
             >
                 {preview ? (
-                <img
-                    src={preview}
-                    alt="Preview"
-                    className="absolute h-full w-full object-cover rounded-md"
-                />
+                    <img
+                        src={preview}
+                        alt="Preview"
+                        className="absolute h-full w-full object-cover rounded-md"
+                    />
                 ) : (
-                <span className="text-gray-500 text-[10px] text-center">selecionar imagem</span>
+                    <span className="text-gray-500 text-[10px] text-center">selecionar imagem</span>
                 )}
             </div>
             <input
