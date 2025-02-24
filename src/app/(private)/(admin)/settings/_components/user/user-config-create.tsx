@@ -1,4 +1,4 @@
-// File: src/app/(private)/(admin)/settings/user/user-config-create.tsx
+// File: src/app/(private)/(admin)/settings/_components/user/user-config-create.tsx
 "use client";
 
 import { useForm } from "react-hook-form";
@@ -81,7 +81,14 @@ export default function NewUser() {
                         "Content-Type": "multipart/form-data",
                     },
                 });
-                avatarURL = uploadResponse.data.url; // Ex: /avatars/arquivo.png
+
+                console.log("Upload response:", uploadResponse.data);
+                
+                if (uploadResponse.data && uploadResponse.data.url) {
+                    avatarURL = uploadResponse.data.url; // Ex: /avatars/arquivo.png
+                } else {
+                    throw new Error("Falha no upload: propriedade 'url' não retornada.")
+                }
             }
             // Chamada para o endpoint de criação de usuário
             await api.post("/users", {...values, avatarURL});
