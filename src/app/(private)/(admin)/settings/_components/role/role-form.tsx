@@ -93,7 +93,7 @@ export default function RoleForm() {
 
         try {
             const response = await api.post("/roles", payload);
-            
+
             toast({
                 title: "Sucesso",
                 description: "Role criado com sucesso!",
@@ -111,12 +111,12 @@ export default function RoleForm() {
 
     return (
         <div className="p-4 border rounded">
-            <h2 className="text-2xl font-bold mb-4">Criar Novo Role</h2>
+            <h2 className="text-lg font-bold mb-4">Criar Novo Grupo de permissão</h2>
             <CustomForm form={{ control, handleSubmit, reset } as any}>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                     <div className="grid grid-cols-2 gap-2">
                         <InputForm
-                            label="Nome do Role"
+                            label="Nome do grupo de permissão"
                             placeholder="Ex: admin"
                             type="text"
                             name="name"
@@ -124,25 +124,25 @@ export default function RoleForm() {
                         />
                         <InputForm
                             label="Descrição"
-                            placeholder="Descrição do role"
+                            placeholder="Ex: Permissão de administrador do sistema"
                             type="text"
                             name="description"
                             control={control}
                         />
                     </div>
                     <div>
-                        <h3 className="text-lg font-medium mb-2">Definir Permissões</h3>
+                        <h3 className="text-md font-medium mb-2">Definir Permissões</h3>
                         {permissions.length === 0 ? (
                             <p className="text-gray-500">Nenhuma permissão encontrada.</p>
                         ) : (
                             permissions.map((perm) => (
                                 <div key={perm.id} className="border p-2 rounded mb-2">
-                                    <h4 className="font-semibold">{perm.name}</h4>
+                                    <h4 className="text-neutral-600 font-semibold">{perm.name}</h4>
                                     <div className="grid grid-cols-2 gap-2">
                                         {perm.description && (
                                             <p className="text-sm text-gray-600">{perm.description}</p>
                                         )}
-                                        
+
                                         <div className="flex col-span-2 md:col-span-1 flex-col lg:flex-row gap-2">
                                             {permissionActions.map((action) => (
                                                 <div key={action.key} className="flex items-center space-x-1">
