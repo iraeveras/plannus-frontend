@@ -96,7 +96,7 @@ export default function UserConfigContent() {
 
     return (
 
-        <div>
+        <div className="mb-4">
             <div className="flex items-center justify-between mb-3">
                 <h2 className="text-sm text-neutral-500 font-medium">Usuários Cadastrados</h2>
                 <Dialog>
