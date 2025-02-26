@@ -113,8 +113,8 @@ export default function NewUser() {
         <>
 
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 flex flex-col">
-                    <div className="flex items-center p-1 gap-3 w-full">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 px-1 flex flex-col">
+                    <div className="flex items-end p-1 gap-3 w-full">
                         {/* Campo opcional para Avatar URL */}
                         <AvatarUpload onFileSelect={setAvatarFile} />
                         <div className="w-full">
