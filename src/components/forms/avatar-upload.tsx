@@ -27,7 +27,7 @@ export default function AvatarUpload({ onFileSelect }: AvatarUploadProps) {
     };
 
     return (
-        <div className="relative flex flex-col items-end w-20 h-20 border rounded-md">
+        <div className="relative flex flex-col w-20 h-20 border border-neutral-400 rounded-md">
             {/* <label className="mb-1 font-medium text-center">Foto</label> */}
             <div
                 onClick={handleClick}
