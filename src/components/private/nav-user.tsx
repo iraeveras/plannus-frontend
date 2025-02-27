@@ -16,8 +16,8 @@ import { User } from "@/types/User";
 import {
     Avatar,
     AvatarFallback,
-    AvatarImage,
 } from "@/components/ui/avatar";
+import Image from "next/image";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -67,7 +67,13 @@ export function NavUser({ user, logout }: NavUserProps) {
                         >
                             <Avatar className="h-8 w-8 rounded-lg">
                                 {user.avatarURL ? (
-                                    <AvatarImage src={user.avatarURL} alt={user.name} />
+                                    <Image
+                                        src={user.avatarURL}
+                                        alt={user.name}
+                                        width={32}
+                                        height={32}
+                                        className="rounded-lg"
+                                    />
                                 ) : (
                                     <AvatarFallback className="rounded-lg">
                                         {getInitials(user.name)}
@@ -90,9 +96,15 @@ export function NavUser({ user, logout }: NavUserProps) {
                     >
                         <DropdownMenuLabel className="p-0 font-normal">
                             <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                                <Avatar className="h-8 w-8 rounded-lg">
+                                <Avatar asChild className="h-8 w-8 rounded-lg">
                                     {user.avatarURL ? (
-                                        <AvatarImage src={user.avatarURL} alt={user.name} />
+                                        <Image
+                                            src={user.avatarURL}
+                                            alt={user.name}
+                                            width={32}
+                                            height={32}
+                                            className="rounded-lg"
+                                        />
                                     ) : (
                                         <AvatarFallback className="rounded-lg">
                                             {getInitials(user.name)}
