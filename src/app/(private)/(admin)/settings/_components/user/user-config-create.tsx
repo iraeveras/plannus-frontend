@@ -69,27 +69,40 @@ export default function NewUser() {
         setIsSubmitting(true);
 
         try {
-            let avatarURL = values.avatarURL; // Valor padrão (pode ser vazio)
+            // Prepare o payload sem o avatar (se houver arquivo, o campo ficará vazio)
+            let payload = { ...values };
+            if (avatarFile) {
+                payload.avatarURL = "";
+            }
 
-            // Se houver um arquivo de avatar, faça o upload
+            // Cria o usuário
+            const createResponse = await api.post("/users", payload);
+
+            // Obtenha o usuário criado a partir de response.data.user
+            let createdUser = createResponse.data.user;
+
+            if (!createdUser || !createdUser.id) {
+                throw new Error("Usuário não retornado corretamente pelo backend.")
+            }
+
+            // Se houver arquivo de avatar, faça o upload e atualize o usuário
             if (avatarFile) {
                 const formData = new FormData();
                 formData.append("file", avatarFile);
-                // Chamada para o endpoint de upload (certifique-se de implementá-lo no backend)
+
                 const uploadResponse = await api.post("/upload-avatar", formData, {
                     headers: { "Content-Type": "multipart/form-data" },
                 });
 
-                console.log("Upload response:", uploadResponse.data);
-
                 if (uploadResponse.data && uploadResponse.data.url) {
-                    avatarURL = uploadResponse.data.url; // Ex: /avatars/arquivo.png
+                    const newAvatarURL = uploadResponse.data.url;
+                    // Atualiza o usuário com a URL do avatar
+                    const updateResponse = await api.put(`/users/${createdUser.id}`, { avatarURL: newAvatarURL });
+                    createdUser = updateResponse.data.user;
                 } else {
-                    throw new Error("Falha no upload: propriedade 'url' não retornada.")
+                    throw new Error("Falha no upload: propriedade 'url' não retornada.");
                 }
             }
-            // Chamada para o endpoint de criação de usuário
-            await api.post("/users", { ...values, avatarURL });
 
             toast({
                 title: "Sucesso!",
