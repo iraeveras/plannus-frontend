@@ -78,8 +78,8 @@ export default function NewUser() {
             // Cria o usuário
             const createResponse = await api.post("/users", payload);
 
-            // Obtenha o usuário criado a partir de response.data.user
-            let createdUser = createResponse.data.user;
+            // Tenta extrair o usuário criado (pode estar em createResponse.data.user ou diretamente em createResponse.data)
+            let createdUser = createResponse.data.user ? createResponse.data.user : createResponse.data;
 
             if (!createdUser || !createdUser.id) {
                 throw new Error("Usuário não retornado corretamente pelo backend.")
@@ -98,7 +98,9 @@ export default function NewUser() {
                     const newAvatarURL = uploadResponse.data.url;
                     // Atualiza o usuário com a URL do avatar
                     const updateResponse = await api.put(`/users/${createdUser.id}`, { avatarURL: newAvatarURL });
-                    createdUser = updateResponse.data.user;
+
+                    // Atualiza o objeto criado com os dados retornados pela atualização
+                    createdUser = updateResponse.data.user ? updateResponse.data.user : updateResponse.data;
                 } else {
                     throw new Error("Falha no upload: propriedade 'url' não retornada.");
                 }
@@ -111,10 +113,17 @@ export default function NewUser() {
             });
             router.push("/settings"); // redireciona para a listagem de usuários
         } catch (error: any) {
-            console.error("Erro ao cadastrar usuário:", error.response?.data || error.message);
+            // Extrai mensagens de erro caso haja validação (ex: express-validator)
+            const errorData = error.response?.data;
+            const errorMessage =
+                errorData && errorData.errors
+                    ? errorData.errors.map((err: any) => err.msg).join(", ")
+                    : errorData?.error || error.message;
+
+            console.error("Erro ao cadastrar usuário:", errorMessage);
             toast({
                 title: "Erro",
-                description: "Ocorreu um erro ao cadastrar o usuário.",
+                description: errorMessage,
                 variant: "destructive",
             });
         } finally {
