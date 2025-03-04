@@ -1,13 +1,14 @@
 // File: src/components/private/nav-user.tsx
 
 "use client"
-
+import { useRouter } from "next/navigation";
 import {
     BadgeCheck,
     Bell,
     ChevronsUpDown,
     CreditCard,
     LogOut,
+    Settings2,
     Sparkles,
 } from "lucide-react";
 
@@ -33,6 +34,7 @@ import {
     SidebarMenuItem,
     useSidebar,
 } from "@/components/ui/sidebar";
+import Link from "next/link";
 
 interface NavUserProps {
     user: User | null;
@@ -49,9 +51,14 @@ function getInitials(name: string): string {
 }
 
 export function NavUser({ user, logout }: NavUserProps) {
+    const router = useRouter();
     const { isMobile } = useSidebar();
 
     if (!user) return null;
+
+    function handleClickSettings() {
+        router.push("/settings")
+    }
 
     return (
         <SidebarMenu>
@@ -116,9 +123,9 @@ export function NavUser({ user, logout }: NavUserProps) {
                         </DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuGroup>
-                            <DropdownMenuItem>
-                                <Sparkles />
-                                Upgrade to Pro
+                            <DropdownMenuItem onClick={() => handleClickSettings()}>
+                                <Settings2/>
+                                Configurações
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator />
