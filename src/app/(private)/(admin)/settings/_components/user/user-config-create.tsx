@@ -62,7 +62,7 @@ export default function NewUser({ onClose, onUserCreated }: NewUserProps) {
             name: "",
             username: "",
             email: "",
-            password: "",
+            password: "senha123",
             status: "active",
             role: "user", // valor padrão; o admin poderá selecionar o papel desejado
             avatarURL: "", // campo opcional, inicialmente vazio
