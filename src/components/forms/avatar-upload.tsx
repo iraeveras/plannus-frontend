@@ -1,23 +1,28 @@
 // File: src/components/forms/avatar-upload.tsx
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface AvatarUploadProps {
     onFileSelect: (file: File | null) => void;
+    initialPreview?: string;
 }
 
-export default function AvatarUpload({ onFileSelect }: AvatarUploadProps) {
-    const [preview, setPreview] = useState<string | null>(null);
+export default function AvatarUpload({ onFileSelect, initialPreview }: AvatarUploadProps) {
+    const [preview, setPreview] = useState<string | null>(initialPreview ?? null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
+    useEffect(() => {
+        setPreview(initialPreview ?? null);
+    }, [initialPreview]);
+
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0] || null;
+        const file = e.target.files?.[0] ?? null;
         if (file) {
             setPreview(URL.createObjectURL(file));
             onFileSelect(file);
         } else {
-            setPreview(null);
+            setPreview(initialPreview ?? null);
             onFileSelect(null);
         }
     };
