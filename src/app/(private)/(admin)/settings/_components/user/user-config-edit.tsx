@@ -52,21 +52,7 @@ const roleOptions = [
 export default function EditUserForm({ initialData, onClose, onUserUpdated }: EditUserFormProps) {
     const { toast } = useToast();
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [avatarFile, setAvatarFile] = useState<File | null>(null);
-
-    // Garantindo que os valores iniciais sejam strings (ou o valor padrão desejado)
-    // const defaultValues: EditUserFormValues = {
-    //     name: initialData.name || "",
-    //     username: initialData.username || "",
-    //     email: initialData.email || "",
-    //     password: "", // Não preenchemos a senha
-    //     status: initialData.status || "active",
-    //     role: initialData.role || "user",
-    //     avatarURL: initialData.avatarURL || "",
-    // };
-
-    console.log(initialData.avatarURL);
-    
+    const [avatarFile, setAvatarFile] = useState<File | null>(null);    
 
     const form = useForm<EditUserFormValues>({
         resolver: zodResolver(editUserSchema),
