@@ -14,6 +14,11 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { useState } from "react";
 
+interface NewUserProps {
+    onClose: () => void;
+    onUserCreated: (user: any) => void;
+}
+
 // Schema de validação para o cadastro de usuário
 const userSchema = z.object({
     name: z.string().min(1, "O nome é obrigatório"),
@@ -45,7 +50,7 @@ const roleOptions = [
     { label: "Usuário", value: "user" },
 ];
 
-export default function NewUser() {
+export default function NewUser({ onClose, onUserCreated }: NewUserProps) {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { toast } = useToast();
@@ -69,11 +74,10 @@ export default function NewUser() {
         setIsSubmitting(true);
 
         try {
-            // Prepare o payload sem o avatar (se houver arquivo, o campo ficará vazio)
-            let payload = { ...values };
-            if (avatarFile) {
-                payload.avatarURL = "";
-            }
+            // Prepare o payload inicial.
+            // Se houver avatarFile, defina avatarURL como string vazia para que o usuário seja criado primeiro sem avatar.
+            let payload = { ...values, avatarURL: avatarFile ? "" : values.avatarURL };
+            
 
             // Cria o usuário
             const createResponse = await api.post("/users", payload);
@@ -111,7 +115,15 @@ export default function NewUser() {
                 description: "Usuário cadastrado com sucesso!",
                 variant: "success",
             });
-            router.push("/settings"); // redireciona para a listagem de usuários
+
+            form.reset();
+
+            // Atualiza a lista de usuários no componente pai
+            onUserCreated(createdUser);
+
+            // Fecha o modal
+            onClose();
+            
         } catch (error: any) {
             // Extrai mensagens de erro caso haja validação (ex: express-validator)
             const errorData = error.response?.data;
@@ -133,7 +145,6 @@ export default function NewUser() {
 
     return (
         <>
-
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 px-1 flex flex-col">
                     <div className="flex items-end p-1 gap-3 w-full">
@@ -194,7 +205,7 @@ export default function NewUser() {
                         />
                     </div>
                     <div className="flex items-center justify-end space-x-4">
-                        <Button variant="zinc" type="submit" disabled={!form.formState.isValid}>
+                        <Button variant="zinc" type="submit" disabled={!form.formState.isValid || isSubmitting}>
                             {isSubmitting ? "Salvando cadastro..." : "Cadastrar"}
                         </Button>
                         {/* <Button asChild variant="border">
