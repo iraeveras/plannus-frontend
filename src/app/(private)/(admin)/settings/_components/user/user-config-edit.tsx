@@ -1,4 +1,4 @@
-// File: src/app/(private)/(admin)/settings/user/user-config-edit.tsx
+// File: src/app/(private)/(admin)/settings/_components/user/user-config-edit.tsx
 "use client";
 
 import { useForm } from "react-hook-form";
@@ -10,7 +10,8 @@ import SelectForm from "@/components/forms/select-form";
 import { useToast } from "@/hooks/use-toast";
 import api from "@/lib/api";
 import { Form } from "@/components/ui/form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import AvatarUpload from "@/components/forms/avatar-upload";
 
 const editUserSchema = z.object({
     name: z.string().min(1, "O nome é obrigatório"),
@@ -51,17 +52,21 @@ const roleOptions = [
 export default function EditUserForm({ initialData, onClose, onUserUpdated }: EditUserFormProps) {
     const { toast } = useToast();
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [avatarFile, setAvatarFile] = useState<File | null>(null);
 
     // Garantindo que os valores iniciais sejam strings (ou o valor padrão desejado)
-    const defaultValues: EditUserFormValues = {
-        name: initialData.name || "",
-        username: initialData.username || "",
-        email: initialData.email || "",
-        password: "", // Não preenchemos a senha
-        status: initialData.status || "active",
-        role: initialData.role || "user",
-        avatarURL: initialData.avatarURL || "",
-    };
+    // const defaultValues: EditUserFormValues = {
+    //     name: initialData.name || "",
+    //     username: initialData.username || "",
+    //     email: initialData.email || "",
+    //     password: "", // Não preenchemos a senha
+    //     status: initialData.status || "active",
+    //     role: initialData.role || "user",
+    //     avatarURL: initialData.avatarURL || "",
+    // };
+
+    console.log(initialData.avatarURL);
+    
 
     const form = useForm<EditUserFormValues>({
         resolver: zodResolver(editUserSchema),
@@ -77,6 +82,19 @@ export default function EditUserForm({ initialData, onClose, onUserUpdated }: Ed
         mode: "onChange",
     });
 
+    // Atualiza o formulário se o initialData mudar
+    useEffect(() => {
+        form.reset({
+            name: initialData.name || "",
+            username: initialData.username || "",
+            email: initialData.email || "",
+            password: "",
+            status: initialData.status || "active",
+            role: initialData.role || "user",
+            avatarURL: initialData.avatarURL || "",
+        });
+    }, [initialData, form]);
+
     const onSubmit = async (values: EditUserFormValues) => {
         setIsSubmitting(true);
         try {
@@ -85,13 +103,34 @@ export default function EditUserForm({ initialData, onClose, onUserUpdated }: Ed
             if (!payload.password) {
                 delete payload.password;
             }
+
+            // Se o usuário selecionou um novo avatar, faça o upload
+            if (avatarFile) {
+                const formData = new FormData();
+                formData.append("file", avatarFile);
+
+                const uploadResponse = await api.post("/upload-avatar", formData, {
+                    headers: {"Content-Type": "multipart/form-data"},
+                });
+
+                if (uploadResponse.data && uploadResponse.data.url) {
+                    payload.avatarURL = uploadResponse.data.url;
+                } else {
+                    throw new Error("Falha no upload: propriedade 'url' não retornada.");
+                }
+            }
+
+            // console.log(payload.avatarURL);
+            
             const response = await api.put(`/users/${initialData.id}`, payload);
             toast({
                 title: "Sucesso!",
                 description: "Usuário atualizado com sucesso!",
                 variant: "success",
             });
-            onUserUpdated(response.data.user);
+
+            const updatedUser = response.data.user ? response.data.user : response.data;
+            onUserUpdated(updatedUser);
             onClose();
         } catch (error: any) {
             console.error("Erro ao atualizar usuário:", error.response?.data || error.message);
@@ -107,37 +146,40 @@ export default function EditUserForm({ initialData, onClose, onUserUpdated }: Ed
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                {/* Se desejar permitir alteração do avatar via URL */}
-                <InputForm
-                    label="Avatar URL (opcional)"
-                    placeholder="Digite a URL do avatar"
-                    type="text"
-                    name="avatarURL"
-                    control={form.control}
-                />
-
-                <InputForm
-                    label="Nome"
-                    placeholder="Digite o nome do usuário"
-                    type="text"
-                    name="name"
-                    control={form.control}
-                />
-                <InputForm
-                    label="Nome de usuário"
-                    placeholder="Digite o username"
-                    type="text"
-                    name="username"
-                    control={form.control}
-                />
-                <InputForm
-                    label="E-mail"
-                    placeholder="Digite o email"
-                    type="email"
-                    name="email"
-                    control={form.control}
-                />
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 px-1 flex flex-col">
+                <div className="flex items-end p-1 gap-3 w-full">
+                    {/* AvatarUpload exibe a imagem atual via initialPreview; se o usuário escolher um novo, o preview muda */}
+                    <AvatarUpload
+                        onFileSelect={setAvatarFile}
+                        initialPreview={initialData.avatarURL}
+                    />
+                    <div className="w-full">
+                        <InputForm
+                            label="Nome"
+                            placeholder="Digite o nome do usuário"
+                            type="text"
+                            name="name"
+                            control={form.control}
+                        />
+                    </div>
+                </div>
+                <div className="grid grid-cols-2 gap-2 w-full">
+                    <InputForm
+                        label="Nome de usuário"
+                        placeholder="Digite o username"
+                        type="text"
+                        name="username"
+                        control={form.control}
+                    />
+                    <InputForm
+                        label="E-mail"
+                        placeholder="Digite o email"
+                        type="email"
+                        name="email"
+                        control={form.control}
+                    />
+                </div>
+                
 
                 {/* Para senha, se for alterar, digitar; caso contrário, deixar vazio */}
                 <InputForm
@@ -147,22 +189,26 @@ export default function EditUserForm({ initialData, onClose, onUserUpdated }: Ed
                     name="password"
                     control={form.control}
                 />
-                <SelectForm
-                    label="Status"
-                    placeholder="Selecione o status"
-                    name="status"
-                    control={form.control}
-                    options={statusOptions}
-                    description="Selecione se o usuário estará ativo ou inativo."
-                />
-                <SelectForm
-                    label="Papel"
-                    placeholder="Selecione o papel"
-                    name="role"
-                    control={form.control}
-                    options={roleOptions}
-                    description="Selecione o papel do usuário."
-                />
+
+                <div className="grid grid-cols-2 gap-2 w-full">
+                    <SelectForm
+                        label="Status"
+                        placeholder="Selecione o status"
+                        name="status"
+                        control={form.control}
+                        options={statusOptions}
+                        description="Selecione se o usuário estará ativo ou inativo."
+                    />
+                    <SelectForm
+                        label="Papel"
+                        placeholder="Selecione o papel"
+                        name="role"
+                        control={form.control}
+                        options={roleOptions}
+                        description="Selecione o papel do usuário."
+                    />
+                </div>
+                
                 <div className="flex items-center justify-end space-x-4">
                     <Button variant="zinc" type="submit" disabled={!form.formState.isValid || isSubmitting}>
                         {isSubmitting ? "Salvando..." : "Salvar Alterações"}
