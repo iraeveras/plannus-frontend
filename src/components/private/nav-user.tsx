@@ -53,9 +53,6 @@ export function NavUser({ user, logout }: NavUserProps) {
 
     if (!user) return null;
 
-    console.log(user.avatarURL);
-
-
     return (
         <SidebarMenu>
             <SidebarMenuItem>
