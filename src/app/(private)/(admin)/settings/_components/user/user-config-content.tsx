@@ -1,4 +1,4 @@
-// File: src/app/(private)/(admin)/settings/user/user-config-content.tsx
+// File: src/app/(private)/(admin)/settings/_components/user/user-config-content.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -19,6 +19,17 @@ import {
     DialogFooter,
     DialogClose,
 } from "@/components/ui/dialog";
+import { 
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import NewUser from "./user-config-create";
 import EditUserForm from "./user-config-edit";
 
@@ -28,6 +39,9 @@ export default function UserConfigContent() {
     const { toast } = useToast();
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+    const [isNewUserDialogOpen, setIsNewUserDialogOpen] = useState(false);
+    const [userToDeleteId, setUserToDeleteId] = useState<string | null>(null);
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
     useEffect(() => {
         document.title = metadata.listUsers.title;
@@ -36,21 +50,23 @@ export default function UserConfigContent() {
             ?.setAttribute("content", metadata.listUsers.description);
     }, []);
 
-    useEffect(() => {
-        async function fetchUsers() {
-            try {
-                const response = await api.get("/users");
-                setUsers(response.data);
-            } catch (error: any) {
-                toast({
-                    title: "Erro",
-                    description: "Erro ao buscar usuários.",
-                    variant: "destructive",
-                });
-            } finally {
-                setLoading(false);
-            }
+    
+    const fetchUsers = async () => {
+        try {
+            const response = await api.get("/users");
+            setUsers(response.data);
+        } catch (error: any) {
+            toast({
+                title: "Erro",
+                description: "Erro ao buscar usuários.",
+                variant: "destructive",
+            });
+        } finally {
+            setLoading(false);
         }
+    }
+
+    useEffect(() => {
         fetchUsers();
     }, [toast]);
 
@@ -63,22 +79,23 @@ export default function UserConfigContent() {
     ] as const;
 
     const handleDelete = async (id: string) => {
-        if (confirm("Tem certeza que deseja excluir este usuário?")) {
-            try {
-                await api.delete(`/users/${id}`);
-                toast({
-                    title: "Sucesso",
-                    description: "Usuário excluído com sucesso.",
-                    variant: "success",
-                });
-                setUsers((prev) => prev.filter((user) => user.id !== id));
-            } catch (error: any) {
-                toast({
-                    title: "Erro",
-                    description: "Erro ao excluir o usuário.",
-                    variant: "destructive",
-                });
-            }
+        try {
+            await api.delete(`/users/${id}`);
+            toast({
+                title: "Sucesso",
+                description: "Usuário excluído com sucesso.",
+                variant: "success",
+            });
+            setUsers((prev) => prev.filter((user) => user.id !== id));
+        } catch (error: any) {
+            toast({
+                title: "Erro",
+                description: "Erro ao excluir o usuário.",
+                variant: "destructive",
+            });
+        } finally {
+            setIsDeleteDialogOpen(false);
+            setUserToDeleteId(null);
         }
     };
 
@@ -86,6 +103,11 @@ export default function UserConfigContent() {
         setSelectedUser(user);
         setIsEditDialogOpen(true);
     };
+
+    const handleUserCreated = (newUser: User) => {
+        setUsers((prev) => [...prev, newUser]);
+        setIsNewUserDialogOpen(false);
+    }
 
     // Função para atualizar a lista após a edição
     const updateUserInList = (updatedUser: User) => {
@@ -99,9 +121,12 @@ export default function UserConfigContent() {
         <div className="mb-4">
             <div className="flex items-center justify-between mb-3">
                 <h2 className="text-sm text-neutral-500 font-medium">Usuários Cadastrados</h2>
-                <Dialog>
+                <Dialog open={isNewUserDialogOpen} onOpenChange={setIsNewUserDialogOpen}>
                     <DialogTrigger asChild>
-                        <Button className="bg-teal-600 hover:bg-teal-500 dark:bg-teal-600 dark:hover:bg-teal-500 dark:text-neutral-100">
+                        <Button 
+                            onClick={() => setIsNewUserDialogOpen(true)} 
+                            className="bg-teal-600 hover:bg-teal-500 dark:bg-teal-600 dark:hover:bg-teal-500 dark:text-neutral-100"
+                        >
                             <UserRoundPlus /> Novo Usuário
                         </Button>
                     </DialogTrigger>
@@ -121,7 +146,10 @@ export default function UserConfigContent() {
                         {/* Aqui você pode incluir o formulário de cadastro de usuário */}
                         <div className="mt-2 overflow-y-auto">
                             {/* Exemplo: você pode reutilizar o formulário de cadastro que já criou */}
-                            <NewUser />
+                            <NewUser 
+                                onClose={() => setIsNewUserDialogOpen(false)} 
+                                onUserCreated={handleUserCreated}
+                            />
                         </div>
                     </DialogContent>
                 </Dialog>
@@ -137,8 +165,33 @@ export default function UserConfigContent() {
                     columns={[...columns]}
                     actions={(row) => (
                         <>
-                            <FilePenLine className="cursor-pointer text-teal-400 hover:text-teal-500" onClick={() => handleEdit(row)} />
-                            <Trash2 className="cursor-pointer text-red-400 hover:text-red-500" onClick={() => handleDelete(row.id)} />
+                            <FilePenLine 
+                                className="cursor-pointer text-teal-400 hover:text-teal-500" 
+                                onClick={() => handleEdit(row)} 
+                            />
+                            {/* AlertDialog para confirmação de exclusão */}
+                            <AlertDialog open={isDeleteDialogOpen && userToDeleteId === row.id} onOpenChange={setIsDeleteDialogOpen}>
+                                <AlertDialogTrigger asChild>
+                                    <Trash2
+                                        className="cursor-pointer text-red-400 hover:text-red-500"
+                                        onClick={() => setUserToDeleteId(row.id)}
+                                    />
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                        <AlertDialogTitle>Confirmar Exclusão</AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                            Tem certeza que deseja excluir este usuário?
+                                        </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                        <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                                        <AlertDialogAction onClick={() => userToDeleteId && handleDelete(userToDeleteId)}>
+                                            Excluir
+                                        </AlertDialogAction>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialog>
                         </>
                     )}
                 />
