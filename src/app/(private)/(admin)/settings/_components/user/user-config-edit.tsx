@@ -77,16 +77,16 @@ export default function EditUserForm({ initialData, onClose, onUserUpdated }: Ed
         mode: "onChange",
     });
 
-    // Quando os roles são carregados e/ou o initialData mudar, atualiza o campo "role"
+    // Atualiza o campo "role" quando os roles são carregados ou o initialData mudar
     useEffect(() => {
-        // Se o valor atual de initialData.role já tiver 24 caracteres (por exemplo, _id de MongoDB), assumimos que está correto.
         let roleValue = initialData.role;
         if (roleOptions.length > 0 && roleValue.length !== 24) {
-            // Procura uma opção cujo label case com o valor recebido
-            const found = roleOptions.find((option) => option.label.toLowerCase() === roleValue.toLowerCase());
-            if (found) {
-                roleValue = found.value;
-            }
+        const found = roleOptions.find((option: { label: string; value: string }) =>
+            option.label.toLowerCase() === roleValue.toLowerCase()
+        );
+        if (found) {
+            roleValue = found.value;
+        }
         }
         form.setValue("role", roleValue);
     }, [initialData, roleOptions, form]);
