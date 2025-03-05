@@ -23,7 +23,7 @@ const editUserSchema = z.object({
     // Para edição, senha pode ser opcional (ou deixar vazio se não quiser alterar)
     password: z.string().optional(),
     status: z.enum(["active", "inactive"]),
-    role: z.enum(["admin", "managerGeafi", "managerGerop", "managerGemkt", "supervisor", "user"]),
+    role: z.string().min(1, "O papel é obrigatório."),
     avatarURL: z.string().optional(),
 });
 
@@ -40,19 +40,28 @@ const statusOptions = [
     { label: "Inativo", value: "inactive" },
 ];
 
-const roleOptions = [
-    { label: "Admin", value: "admin" },
-    { label: "Gerente Administrativo Financeiro", value: "managerGeafi" },
-    { label: "Gerente de Operações", value: "managerGerop" },
-    { label: "Gerente de Marketing", value: "managerGemkt" },
-    { label: "Supervisor", value: "supervisor" },
-    { label: "Usuário", value: "user" },
-];
-
 export default function EditUserForm({ initialData, onClose, onUserUpdated }: EditUserFormProps) {
     const { toast } = useToast();
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [avatarFile, setAvatarFile] = useState<File | null>(null);    
+    const [avatarFile, setAvatarFile] = useState<File | null>(null);
+    const [roleOptions, setRoleOptions] = useState<{ label: string; value: string}[]>([]);
+
+    useEffect(() => {
+        async function fetchRoles() {
+            try {
+                const response = await api.get("/roles");
+                const roles = response.data.map((role: any) => ({
+                    label: role.name,
+                    value: role.id,
+                }));
+                
+                setRoleOptions(roles);
+            } catch (error) {
+                console.error("Erro ao buscar roles:", error);                
+            }
+        }
+        fetchRoles();
+    }, []);    
 
     const form = useForm<EditUserFormValues>({
         resolver: zodResolver(editUserSchema),
@@ -62,11 +71,25 @@ export default function EditUserForm({ initialData, onClose, onUserUpdated }: Ed
             email: initialData.email || "",
             password: "", // Nunca preenche a senha para edição
             status: initialData.status || "active",
-            role: initialData.role || "user",
+            role: initialData.role || "",
             avatarURL: initialData.avatarURL || "",
         },
         mode: "onChange",
     });
+
+    // Quando os roles são carregados e/ou o initialData mudar, atualiza o campo "role"
+    useEffect(() => {
+        // Se o valor atual de initialData.role já tiver 24 caracteres (por exemplo, _id de MongoDB), assumimos que está correto.
+        let roleValue = initialData.role;
+        if (roleOptions.length > 0 && roleValue.length !== 24) {
+            // Procura uma opção cujo label case com o valor recebido
+            const found = roleOptions.find((option) => option.label.toLowerCase() === roleValue.toLowerCase());
+            if (found) {
+                roleValue = found.value;
+            }
+        }
+        form.setValue("role", roleValue);
+    }, [initialData, roleOptions, form]);
 
     // Atualiza o formulário se o initialData mudar
     useEffect(() => {
@@ -76,7 +99,7 @@ export default function EditUserForm({ initialData, onClose, onUserUpdated }: Ed
             email: initialData.email || "",
             password: "",
             status: initialData.status || "active",
-            role: initialData.role || "user",
+            role: initialData.role || "",
             avatarURL: initialData.avatarURL || "",
         });
     }, [initialData, form]);
@@ -97,7 +120,7 @@ export default function EditUserForm({ initialData, onClose, onUserUpdated }: Ed
 
                 const uploadResponse = await api.post("/upload-avatar", formData, {
                     headers: {"Content-Type": "multipart/form-data"},
-                });
+                });                
 
                 if (uploadResponse.data && uploadResponse.data.url) {
                     payload.avatarURL = uploadResponse.data.url;
@@ -116,6 +139,7 @@ export default function EditUserForm({ initialData, onClose, onUserUpdated }: Ed
             });
 
             const updatedUser = response.data.user ? response.data.user : response.data;
+            
             onUserUpdated(updatedUser);
             onClose();
         } catch (error: any) {

@@ -12,7 +12,7 @@ import SelectForm from "@/components/forms/select-form";
 import AvatarUpload from "@/components/forms/avatar-upload";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface NewUserProps {
     onClose: () => void;
@@ -29,7 +29,7 @@ const userSchema = z.object({
     email: z.string().email("Email inválido"),
     password: z.string().min(6, "A senha deve ter no mínimo 6 caracteres"),
     status: z.enum(["active", "inactive"]),
-    role: z.enum(["admin", "managerGeafi", "managerGerop", "managerGemkt", "supervisor", "user"]),
+    role: z.string().min(1, "O papel é obrigatório."),
     avatarURL: z.string().optional(), // campo opcional para o avatar
 });
 
@@ -41,20 +41,28 @@ const statusOptions = [
     { label: "Inativo", value: "inactive" },
 ];
 
-const roleOptions = [
-    { label: "Admin", value: "admin" },
-    { label: "Gerente Administrativo Financeiro", value: "managerGeafi" },
-    { label: "Gerente de Operações", value: "managerGerop" },
-    { label: "Gerente de Marketing", value: "managerGemkt" },
-    { label: "Supervisor", value: "supervisor" },
-    { label: "Usuário", value: "user" },
-];
-
 export default function NewUser({ onClose, onUserCreated }: NewUserProps) {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { toast } = useToast();
     const [avatarFile, setAvatarFile] = useState<File | null>(null);
+    const [roleOptions, setRoleOptions] = useState<{ label: string; value: string}[]>([]);
+
+    useEffect(() => {
+        async function fetchRoles() {
+            try {
+                const response = await api.get("/roles");
+                const roles = response.data.map((role: any) => ({
+                    label: role.name,
+                    value: role.id,
+                }));
+                setRoleOptions(roles);
+            } catch (error) {
+                console.error("Erro ao buscar roles:", error);                
+            }
+        }
+        fetchRoles();
+    }, [])
 
     const form = useForm<UserFormValues>({
         resolver: zodResolver(userSchema),
@@ -64,11 +72,17 @@ export default function NewUser({ onClose, onUserCreated }: NewUserProps) {
             email: "",
             password: "senha123",
             status: "active",
-            role: "user", // valor padrão; o admin poderá selecionar o papel desejado
+            role: "", // Será definido após buscar os roles
             avatarURL: "", // campo opcional, inicialmente vazio
         },
         mode: "onChange",
     });
+
+    useEffect(() => {
+        if (roleOptions.length > 0 && !form.getValues("role")) {
+            form.setValue("role", roleOptions[0].value);
+        }
+    }, [roleOptions, form]);
 
     const onSubmit = async (values: UserFormValues) => {
         setIsSubmitting(true);
