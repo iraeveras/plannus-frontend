@@ -1,6 +1,10 @@
 // src/types/User.ts
 
-export type UserRole = "admin" | "managerGeafi" | "managerGerop" | "managerGemkt" | "supervisor" | "user";
+export interface Role {
+    id: string;
+    name: string;
+    description?: string;
+}
 
 export interface User {
     id: string;
@@ -8,6 +12,6 @@ export interface User {
     username: string;        // Adicionado
     email: string;
     status: "active" | "inactive";  // Adicionado
-    role: UserRole;
+    role: Role;
     avatarURL?: string;      // Adicionado, opcional
 }
