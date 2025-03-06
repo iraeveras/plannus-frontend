@@ -14,4 +14,5 @@ export interface User {
     status: "active" | "inactive";  // Adicionado
     role: Role;
     avatarURL?: string;      // Adicionado, opcional
+    password?: string;
 }

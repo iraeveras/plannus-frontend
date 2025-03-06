@@ -12,6 +12,7 @@ import api from "@/lib/api";
 import { Form } from "@/components/ui/form";
 import { useEffect, useState } from "react";
 import AvatarUpload from "@/components/forms/avatar-upload";
+import { User } from "@/types/User";
 
 const editUserSchema = z.object({
     name: z.string().min(1, "O nome é obrigatório"),
@@ -30,7 +31,7 @@ const editUserSchema = z.object({
 type EditUserFormValues = z.infer<typeof editUserSchema>;
 
 interface EditUserFormProps {
-    initialData: EditUserFormValues & { id: string };
+    initialData: User;
     onClose: () => void;
     onUserUpdated: (updatedUser: any) => void;
 }
@@ -61,7 +62,11 @@ export default function EditUserForm({ initialData, onClose, onUserUpdated }: Ed
             }
         }
         fetchRoles();
-    }, []);    
+    }, []);
+
+    // Determina o valor inicial do campo "role": se initialData.role for um objeto, usamos seu id; se for string, usamos diretamente
+    const initialRoleValue =
+    typeof initialData.role === "string" ? initialData.role : initialData.role.id;
 
     const form = useForm<EditUserFormValues>({
         resolver: zodResolver(editUserSchema),
@@ -71,7 +76,7 @@ export default function EditUserForm({ initialData, onClose, onUserUpdated }: Ed
             email: initialData.email || "",
             password: "", // Nunca preenche a senha para edição
             status: initialData.status || "active",
-            role: initialData.role || "",
+            role: initialRoleValue,
             avatarURL: initialData.avatarURL || "",
         },
         mode: "onChange",
@@ -79,14 +84,19 @@ export default function EditUserForm({ initialData, onClose, onUserUpdated }: Ed
 
     // Atualiza o campo "role" quando os roles são carregados ou o initialData mudar
     useEffect(() => {
-        let roleValue = initialData.role;
+        let roleValue =
+            typeof initialData.role === "string" ? initialData.role : initialData.role.id;
+
         if (roleOptions.length > 0 && roleValue.length !== 24) {
-        const found = roleOptions.find((option: { label: string; value: string }) =>
-            option.label.toLowerCase() === roleValue.toLowerCase()
-        );
-        if (found) {
-            roleValue = found.value;
-        }
+            
+            const found = roleOptions.find((option: { label: string; value: string }) =>
+                option.label.toLowerCase() ===
+                    (typeof initialData.role === "string" ? initialData.role : initialData.role.name).toLowerCase()
+            );
+
+            if (found) {
+                roleValue = found.value;
+            }
         }
         form.setValue("role", roleValue);
     }, [initialData, roleOptions, form]);
@@ -99,7 +109,7 @@ export default function EditUserForm({ initialData, onClose, onUserUpdated }: Ed
             email: initialData.email || "",
             password: "",
             status: initialData.status || "active",
-            role: initialData.role || "",
+            role: typeof initialData.role === "string" ? initialData.role : initialData.role.id,
             avatarURL: initialData.avatarURL || "",
         });
     }, [initialData, form]);
