@@ -15,4 +15,5 @@ export interface User {
     role: Role;
     avatarURL?: string;      // Adicionado, opcional
     password?: string;
+    mustChangePassword: boolean;
 }
