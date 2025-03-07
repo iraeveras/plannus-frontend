@@ -1,10 +1,16 @@
+// FIle: src/app/login/page.tsx
 "use client"
 import { GalleryVerticalEnd } from "lucide-react";
 import { LoginForm } from "@/components/login-form";
 import { metadata } from "@/app/metadata";
 import { useEffect } from "react";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
+import ChangePasswordForm from "./_components/change-password-form";
 
 export default function LoginPage() {
+  const { user } = useAuth();
+  const route = useRouter();
 
   useEffect(() => {
     document.title = metadata.login.title;
@@ -12,6 +18,15 @@ export default function LoginPage() {
       .querySelector('meta[name="description"]')
       ?.setAttribute("content", metadata.login.description);
   }, []);
+
+  if (user) {
+    if (user.mustChangePassword) {
+      return <ChangePasswordForm />
+    } else {
+      route.push("/dashboard");
+      return null;
+    }
+  }
 
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
