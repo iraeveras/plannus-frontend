@@ -1,31 +1,38 @@
 // FIle: src/app/login/page.tsx
 "use client"
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 import { GalleryVerticalEnd } from "lucide-react";
 import { LoginForm } from "@/components/login-form";
 import { metadata } from "@/app/metadata";
-import { useEffect } from "react";
-import { useAuth } from "@/context/AuthContext";
-import { useRouter } from "next/navigation";
 import ChangePasswordForm from "./_components/change-password-form";
 
 export default function LoginPage() {
   const { user } = useAuth();
-  const route = useRouter();
+  const router = useRouter();
 
   useEffect(() => {
     document.title = metadata.login.title;
-    document
-      .querySelector('meta[name="description"]')
-      ?.setAttribute("content", metadata.login.description);
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) {
+      meta.setAttribute("content", metadata.login.description);
+    }
   }, []);
 
-  if (user) {
-    if (user.mustChangePassword) {
-      return <ChangePasswordForm />
-    } else {
-      route.push("/dashboard");
-      return null;
+  // Redireciona para dashboard se o usuário estiver autenticado E não precisar alterar a senha
+  useEffect(() => {
+    if (user && !user.mustChangePassword) {
+      // Usamos setTimeout para evitar conflitos durante a renderização
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 0);
     }
+  }, [user, router]);
+
+  // Se o usuário estiver autenticado e precisar alterar a senha, renderiza o formulário de mudança de senha
+  if (user && user.mustChangePassword) {
+    return <ChangePasswordForm />;
   }
 
   return (

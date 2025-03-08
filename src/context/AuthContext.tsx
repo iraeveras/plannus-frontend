@@ -19,21 +19,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null)
     const router = useRouter()
 
-    // Recupera o usuário do localStorage ao iniciar
+    // Recupera o token do localStorage ao iniciar
     useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (token) {
-            fetchUserData();
+        const storedToken = localStorage.getItem("token");
+        if (storedToken) {
+        let token = storedToken;
+        // Tenta fazer o parse caso o token tenha sido armazenado erroneamente como objeto JSON
+        try {
+            const parsed = JSON.parse(storedToken);
+            if (typeof parsed === "string") {
+            token = parsed;
+            }
+        } catch (err) {
+            // Se o parse falhar, assume que storedToken já é uma string válida
+        }
+        fetchUserData(token);
         }
     }, []);
 
-    async function fetchUserData() {
+    async function fetchUserData(token: string) {
         try {
-            const token = localStorage.getItem("token");
-
-            if (!token) {
-                throw Error("Token não encontrado.");
-            }
+            
 
             const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/me`, {
                 headers: { Authorization: `Bearer ${token}` },
@@ -50,12 +56,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             const data = await res.json();
             setUser(data.user);
         } catch (error: any) {
-            // Se o erro indicar 401 (Unauthorized), trata de forma mais silenciosa
-            if (error.message.includes("401")) {
-                console.warn("Token inválido ou não autorizado. Redirecionando para login.");
-            } else {
-                console.error("Erro ao buscar dados do usuário:", error);
-            }
+            console.error("Erro ao buscar dados do usuário:", error);
             logout();
         }
     }

@@ -61,7 +61,7 @@ export default function LandingPage() {
               className={`absolute inset-0 transition-opacity duration-1000 ${index === currentSlide ? 'opacity-100' : 'opacity-0'
                 }`}
             >
-              <Image src={slide.image} alt={slide.title} layout="fill" objectFit="cover" />
+              {/* <Image src={slide.image} alt={slide.title} layout="fill" objectFit="cover" /> */}
               {/* Sobreposição para realçar o texto */}
               <div className="absolute inset-0 bg-black opacity-30"></div>
               <div className="absolute inset-0 flex flex-col items-center justify-center text-white">

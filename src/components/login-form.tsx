@@ -48,9 +48,22 @@ export function LoginForm({
         throw new Error("Usuário ou senha inválidos.")
       }
 
-      const data = await response.json()
-      localStorage.setItem("token", data.token);
-      document.cookie = `token=${data.token}; Path=/; Secure; SameSite=Strict`;
+      const data = await response.json();
+
+      // Extrai o token e garante que é uma string
+      let token = data.token;
+      if (typeof token !== "string") {
+        // Se o token for um objeto e tiver uma propriedade 'token', usamos ela.
+        if (token && typeof token === "object" && token.token) {
+          token = token.token;
+        } else {
+          throw new Error("Token inválido recebido.");
+        }
+      }
+
+      localStorage.setItem("token", token);
+      document.cookie = `token=${token}; Path=/; Secure; SameSite=Strict`;
+
       setUser(data.user);
 
       toast({
