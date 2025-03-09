@@ -61,8 +61,15 @@ export function LoginForm({
         }
       }
 
+      // Armazena o token no localStorage (como string)
       localStorage.setItem("token", token);
       document.cookie = `token=${token}; Path=/; Secure; SameSite=Strict`;
+
+      // if (data.user.mustChangePassword) {
+      //   localStorage.setItem("firstAccess", "true");
+      // } else {
+      //   localStorage.removeItem("firstAccess");
+      // }
 
       setUser(data.user);
 
@@ -72,7 +79,7 @@ export function LoginForm({
         variant: "success",
       });
 
-      router.push("/dashboard");
+      //router.push("/dashboard");
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : "Erro desconhecido";
       toast({

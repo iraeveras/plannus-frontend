@@ -11,8 +11,10 @@ import ChangePasswordForm from "./_components/change-password-form";
 export default function LoginPage() {
   const { user } = useAuth();
   const router = useRouter();
+  const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
+    setIsHydrated(true);
     document.title = metadata.login.title;
     const meta = document.querySelector('meta[name="description"]');
     if (meta) {
@@ -20,20 +22,13 @@ export default function LoginPage() {
     }
   }, []);
 
-  // Redireciona para dashboard se o usuário estiver autenticado E não precisar alterar a senha
   useEffect(() => {
-    if (user && !user.mustChangePassword) {
-      // Usamos setTimeout para evitar conflitos durante a renderização
-      setTimeout(() => {
-        router.push("/dashboard");
-      }, 0);
+    if (isHydrated && user && !user.mustChangePassword) {
+      router.push("/dashboard");
     }
-  }, [user, router]);
+  }, [isHydrated, user, router]);
 
-  // Se o usuário estiver autenticado e precisar alterar a senha, renderiza o formulário de mudança de senha
-  if (user && user.mustChangePassword) {
-    return <ChangePasswordForm />;
-  }
+  if (!isHydrated) return null;
 
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
@@ -48,7 +43,12 @@ export default function LoginPage() {
         </div>
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
-            <LoginForm />
+            {user && user.mustChangePassword ? (
+              <ChangePasswordForm />
+            ) : (
+              <LoginForm />
+            )}
+            
           </div>
         </div>
       </div>

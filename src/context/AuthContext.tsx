@@ -23,24 +23,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     useEffect(() => {
         const storedToken = localStorage.getItem("token");
         if (storedToken) {
-        let token = storedToken;
-        // Tenta fazer o parse caso o token tenha sido armazenado erroneamente como objeto JSON
-        try {
-            const parsed = JSON.parse(storedToken);
-            if (typeof parsed === "string") {
-            token = parsed;
+            let token = storedToken;
+            // Tenta fazer o parse caso o token tenha sido armazenado erroneamente como objeto JSON
+            try {
+                const parsed = JSON.parse(storedToken);
+                if (typeof parsed === "string") {
+                token = parsed;
+                }
+            } catch (err) {
+                // Se o parse falhar, assume que storedToken já é uma string válida
             }
-        } catch (err) {
-            // Se o parse falhar, assume que storedToken já é uma string válida
-        }
-        fetchUserData(token);
+            fetchUserData(token);
         }
     }, []);
 
     async function fetchUserData(token: string) {
         try {
             
-
             const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/me`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
@@ -67,6 +66,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(null)
         router.push("/")
     }
+
+    // forçar o redirecionamento caso o usuário precise alterar a senha
+    useEffect(() => {
+        // Se o usuário estiver autenticado e precisar alterar a senha...
+        if (user && user.mustChangePassword) {
+            // ...e se a rota atual não for a página de alteração de senha, redirecione
+            if (window.location.pathname !== "/login") {
+                router.push("/login");
+            }
+        }
+    }, [user, router]);
 
     return (
         <AuthContext.Provider value={{ user, setUser, logout }}>
